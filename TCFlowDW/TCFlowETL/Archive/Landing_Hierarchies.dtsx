@@ -1,0 +1,2969 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="5/15/2013 12:54:20 AM"
+  DTS:CreationName="SSIS.Package.3"
+  DTS:CreatorComputerName="T-CMP-MTR-SD"
+  DTS:CreatorName="T-CMP-MTR-SD\ryan"
+  DTS:DTSID="{B9DB0919-0716-471F-B48F-3A9D82648CFD}"
+  DTS:ExecutableType="SSIS.Package.3"
+  DTS:LastModifiedProductVersion="11.0.3350.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Landing"
+  DTS:PackageType="5"
+  DTS:VersionBuild="119"
+  DTS:VersionGUID="{30D54BC3-9C25-4B94-AC15-DA3BEE6C83D9}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">6</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[localhost.FLOW_DW_DB.biadmin1]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{D8E3983E-194A-45FA-874F-A39AD080929A}"
+      DTS:ObjectName="localhost.FLOW_DW_DB.biadmin1">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=FLOW_DW_DB;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[MongoDB.TCFlow.Dispatch]"
+      DTS:CreationName="MongoDB"
+      DTS:DTSID="{13F33D5E-2312-4E56-8583-D0282084FAFD}"
+      DTS:ObjectName="MongoDB.TCFlow.Dispatch">
+      <DTS:ObjectData>
+        <InnerObject>
+          <DatabaseName
+            Type="8"
+            Value="dispatch" />
+          <Password
+            Type="8"
+            Value="ETL" />
+          <ServerName
+            Type="8"
+            Value="localhost" />
+          <SlaveOk
+            Type="11"
+            Value="0" />
+          <Ssl
+            Type="11"
+            Value="0" />
+          <UserName
+            Type="8"
+            Value="ETLUser" />
+        </InnerObject>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:PackageParameters>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{C3B1D462-BF79-4D2D-9B3A-516C5893362B}"
+      DTS:ObjectName="DestDBServer">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">localhost</DTS:Property>
+    </DTS:PackageParameter>
+  </DTS:PackageParameters>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{E904B65D-6E7D-49C4-993A-CE7935FF53C7}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="curBatchKey">
+      <DTS:VariableValue
+        DTS:DataType="3">4</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Land Flow Daily"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{9715AEB9-3961-4250-9ED9-AEBCF3E00CA5}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Land Flow Daily">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Land Flow Daily\Complete Batch"
+          DTS:CreationName="STOCK:SEQUENCE"
+          DTS:Description="Sequence Container"
+          DTS:DTSID="{190F80C2-3EC8-429D-9F9F-DD518E1C3BF0}"
+          DTS:ExecutableType="STOCK:SEQUENCE"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Complete Batch">
+          <DTS:Variables />
+          <DTS:Executables>
+            <DTS:Executable
+              DTS:refId="Package\Land Flow Daily\Complete Batch\Complete Batch"
+              DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:Description="Execute SQL Task"
+              DTS:DTSID="{1DC3FB1C-94AC-432B-AFE1-6903214D37FB}"
+              DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Complete Batch"
+              DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+              DTS:ThreadHint="0">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <SQLTask:SqlTaskData
+                  SQLTask:Connection="{D8E3983E-194A-45FA-874F-A39AD080929A}"
+                  SQLTask:SqlStatementSource="Update lnd.Batches Set ExecutionEndDate = GetDate() Where BatchKey = ?" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+                  <SQLTask:ParameterBinding
+                    SQLTask:ParameterName="0"
+                    SQLTask:DtsVariableName="User::curBatchKey"
+                    SQLTask:ParameterDirection="Input"
+                    SQLTask:DataType="20"
+                    SQLTask:ParameterSize="-1" />
+                </SQLTask:SqlTaskData>
+              </DTS:ObjectData>
+            </DTS:Executable>
+          </DTS:Executables>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Land Flow Daily\Create New Batch"
+          DTS:CreationName="STOCK:SEQUENCE"
+          DTS:Description="Sequence Container"
+          DTS:DTSID="{BE16666D-B678-42A1-AA03-74A62108830C}"
+          DTS:ExecutableType="STOCK:SEQUENCE"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Create New Batch">
+          <DTS:Variables />
+          <DTS:Executables>
+            <DTS:Executable
+              DTS:refId="Package\Land Flow Daily\Create New Batch\Create Batch"
+              DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:Description="Execute SQL Task"
+              DTS:DTSID="{8FA8CFA1-F281-4192-8BF4-6ACA50ECC115}"
+              DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Create Batch"
+              DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+              DTS:ThreadHint="1">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <SQLTask:SqlTaskData
+                  SQLTask:Connection="{D8E3983E-194A-45FA-874F-A39AD080929A}"
+                  SQLTask:SqlStatementSource="Insert Into lnd.Batches Select Max(BatchKey + 1) BatchKey, 'Daily' BatchType, Current_Timestamp ExecutionStartDate, null as ExecutionEndDate From lnd.Batches" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\Land Flow Daily\Create New Batch\Set Batch Variable"
+              DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:Description="Execute SQL Task"
+              DTS:DTSID="{3B9233EA-8ED5-4D9A-B1D0-C26C9C099257}"
+              DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Set Batch Variable"
+              DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+              DTS:ThreadHint="1">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <SQLTask:SqlTaskData
+                  SQLTask:Connection="{D8E3983E-194A-45FA-874F-A39AD080929A}"
+                  SQLTask:BypassPrepare="False"
+                  SQLTask:SqlStatementSource="Select Max(BatchKey) as curBatchKey from lnd.Batches"
+                  SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+                  <SQLTask:ResultBinding
+                    SQLTask:ResultName="0"
+                    SQLTask:DtsVariableName="User::curBatchKey" />
+                </SQLTask:SqlTaskData>
+              </DTS:ObjectData>
+            </DTS:Executable>
+          </DTS:Executables>
+          <DTS:PrecedenceConstraints>
+            <DTS:PrecedenceConstraint
+              DTS:refId="Package\Land Flow Daily\Create New Batch.PrecedenceConstraints[Constraint]"
+              DTS:CreationName=""
+              DTS:DTSID="{88F06B71-53FF-4387-9C02-9AB0DFD9D944}"
+              DTS:From="Package\Land Flow Daily\Create New Batch\Create Batch"
+              DTS:LogicalAnd="True"
+              DTS:ObjectName="Constraint"
+              DTS:To="Package\Land Flow Daily\Create New Batch\Set Batch Variable" />
+          </DTS:PrecedenceConstraints>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Land Flow Daily\Land Hierarchies"
+          DTS:CreationName="STOCK:SEQUENCE"
+          DTS:Description="Sequence Container"
+          DTS:DTSID="{948789DC-C024-4085-9D66-E841233458E9}"
+          DTS:ExecutableType="STOCK:SEQUENCE"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Land Hierarchies">
+          <DTS:Variables>
+            <DTS:Variable
+              DTS:CreationName=""
+              DTS:DTSID="{0B913EAA-6AC8-4C40-87F6-E2C7FB2365FD}"
+              DTS:IncludeInDebugDump="6789"
+              DTS:Namespace="User"
+              DTS:ObjectName="curBatchStepKey">
+              <DTS:VariableValue
+                DTS:DataType="20">0</DTS:VariableValue>
+            </DTS:Variable>
+          </DTS:Variables>
+          <DTS:Executables>
+            <DTS:Executable
+              DTS:refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies"
+              DTS:CreationName="SSIS.Pipeline.3"
+              DTS:Description="Data Flow Task"
+              DTS:DTSID="{D31A60AC-3D96-42EC-90D2-9E1F5CBA1227}"
+              DTS:ExecutableType="SSIS.Pipeline.3"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Land Hierarchies"
+              DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <pipeline
+                  version="1">
+                  <components>
+                    <component
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch"
+                      componentClassID="{49928E82-9C4E-49F0-AABE-3812B82707EC}"
+                      contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                      description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                      name="Assign Batch"
+                      usesDispositions="true">
+                      <inputs>
+                        <input
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Inputs[Derived Column Input]"
+                          description="Input to the Derived Column Transformation"
+                          name="Derived Column Input">
+                          <externalMetadataColumns />
+                        </input>
+                      </inputs>
+                      <outputs>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Outputs[Derived Column Output]"
+                          description="Default Output of the Derived Column Transformation"
+                          exclusionGroup="1"
+                          name="Derived Column Output"
+                          synchronousInputId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Inputs[Derived Column Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Outputs[Derived Column Output].Columns[BatchKey]"
+                              dataType="i4"
+                              errorOrTruncationOperation="Computation"
+                              errorRowDisposition="FailComponent"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Outputs[Derived Column Output].Columns[BatchKey]"
+                              name="BatchKey"
+                              truncationRowDisposition="FailComponent">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.String"
+                                  description="Derived Column Expression"
+                                  name="Expression">@[User::curBatchKey]</property>
+                                <property
+                                  containsID="true"
+                                  dataType="System.String"
+                                  description="Derived Column Friendly Expression"
+                                  expressionType="Notify"
+                                  name="FriendlyExpression">@[User::curBatchKey]</property>
+                              </properties>
+                            </outputColumn>
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Outputs[Derived Column Output].Columns[TypeCategory]"
+                              dataType="wstr"
+                              errorOrTruncationOperation="Computation"
+                              errorRowDisposition="FailComponent"
+                              length="11"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Outputs[Derived Column Output].Columns[TypeCategory]"
+                              name="TypeCategory"
+                              truncationRowDisposition="FailComponent">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.String"
+                                  description="Derived Column Expression"
+                                  name="Expression">"hierarchies"</property>
+                                <property
+                                  containsID="true"
+                                  dataType="System.String"
+                                  description="Derived Column Friendly Expression"
+                                  expressionType="Notify"
+                                  name="FriendlyExpression">"hierarchies"</property>
+                              </properties>
+                            </outputColumn>
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Outputs[Derived Column Error Output]"
+                          description="Error Output of the Derived Column Transformation"
+                          exclusionGroup="1"
+                          isErrorOut="true"
+                          name="Derived Column Error Output"
+                          synchronousInputId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Inputs[Derived Column Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                              dataType="i4"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                              name="ErrorCode"
+                              specialFlags="1" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                              dataType="i4"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                              name="ErrorColumn"
+                              specialFlags="2" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                    <component
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas"
+                      componentClassID="{B594E9A8-4351-4939-891C-CFE1AB93E925}"
+                      contactInfo="Union All;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                      description="Combines rows from multiple data flows without sorting. For example, add rows back to a data flow after correction of errors. If sorting is important, we recommend using the Merge transformation."
+                      name="Combine Deltas"
+                      version="1">
+                      <inputs>
+                        <input
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 1]"
+                          name="Union All Input 1">
+                          <inputColumns>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 1].Columns[_id]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="50"
+                              cachedName="_id"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[_id]">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Output column lineage ID"
+                                  name="OutputColumnLineageID">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[_id]}</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 1].Columns[name]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="25"
+                              cachedName="name"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[name]">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Output column lineage ID"
+                                  name="OutputColumnLineageID">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[name]}</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 1].Columns[description]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="50"
+                              cachedName="description"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[description]">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Output column lineage ID"
+                                  name="OutputColumnLineageID">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[description]}</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 1].Columns[active]"
+                              cachedDataType="bool"
+                              cachedName="active"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[active]">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Output column lineage ID"
+                                  name="OutputColumnLineageID">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[active]}</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 1].Columns[order]"
+                              cachedDataType="i4"
+                              cachedName="order"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[order]">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Output column lineage ID"
+                                  name="OutputColumnLineageID">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[order]}</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 1].Columns[ModTimestamp]"
+                              cachedDataType="date"
+                              cachedName="ModTimestamp"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[ModTimestamp]">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Output column lineage ID"
+                                  name="OutputColumnLineageID">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[ModTimestamp]}</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 1].Columns[TgtModTimestamp]"
+                              cachedDataType="dbTimeStamp"
+                              cachedName="TgtModTimestamp"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Outputs[Lookup Match Output].Columns[TgtModTimestamp]">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Output column lineage ID"
+                                  name="OutputColumnLineageID">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[TgtModTimestamp]}</property>
+                              </properties>
+                            </inputColumn>
+                          </inputColumns>
+                          <externalMetadataColumns />
+                        </input>
+                        <input
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 2]"
+                          hasSideEffects="true"
+                          name="Union All Input 2">
+                          <inputColumns>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 2].Columns[_id]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="50"
+                              cachedName="_id"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[_id]">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Output column lineage ID"
+                                  name="OutputColumnLineageID">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[_id]}</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 2].Columns[name]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="25"
+                              cachedName="name"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[name]">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Output column lineage ID"
+                                  name="OutputColumnLineageID">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[name]}</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 2].Columns[description]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="50"
+                              cachedName="description"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[description]">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Output column lineage ID"
+                                  name="OutputColumnLineageID">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[description]}</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 2].Columns[active]"
+                              cachedDataType="bool"
+                              cachedName="active"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[active]">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Output column lineage ID"
+                                  name="OutputColumnLineageID">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[active]}</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 2].Columns[order]"
+                              cachedDataType="i4"
+                              cachedName="order"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[order]">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Output column lineage ID"
+                                  name="OutputColumnLineageID">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[order]}</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 2].Columns[ModTimestamp]"
+                              cachedDataType="date"
+                              cachedName="ModTimestamp"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[ModTimestamp]">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Output column lineage ID"
+                                  name="OutputColumnLineageID">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[ModTimestamp]}</property>
+                              </properties>
+                            </inputColumn>
+                          </inputColumns>
+                          <externalMetadataColumns />
+                        </input>
+                        <input
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 3]"
+                          dangling="true"
+                          hasSideEffects="true"
+                          name="Union All Input 3">
+                          <externalMetadataColumns />
+                        </input>
+                      </inputs>
+                      <outputs>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1]"
+                          name="Union All Output 1">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[_id]"
+                              codePage="1252"
+                              dataType="str"
+                              length="50"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[_id]"
+                              name="_id" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[name]"
+                              codePage="1252"
+                              dataType="str"
+                              length="50"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[name]"
+                              name="name" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[description]"
+                              codePage="1252"
+                              dataType="str"
+                              length="50"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[description]"
+                              name="description" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[active]"
+                              dataType="bool"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[active]"
+                              name="active" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[order]"
+                              dataType="i4"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[order]"
+                              name="order" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[ModTimestamp]"
+                              dataType="date"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[ModTimestamp]"
+                              name="ModTimestamp" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[TgtModTimestamp]"
+                              dataType="dbTimeStamp"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[TgtModTimestamp]"
+                              name="TgtModTimestamp" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                    <component
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name"
+                      componentClassID="{62B1106C-7DB8-4EC8-ADD6-4C664DFFC54A}"
+                      contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                      description="Data Conversion"
+                      name="Convert Type Name"
+                      usesDispositions="true">
+                      <inputs>
+                        <input
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Inputs[Data Conversion Input]"
+                          name="Data Conversion Input">
+                          <inputColumns>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Inputs[Data Conversion Input].Columns[TypeCategory]"
+                              cachedDataType="wstr"
+                              cachedLength="11"
+                              cachedName="TypeCategory"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Outputs[Derived Column Output].Columns[TypeCategory]" />
+                          </inputColumns>
+                          <externalMetadataColumns />
+                        </input>
+                      </inputs>
+                      <outputs>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Outputs[Data Conversion Output]"
+                          exclusionGroup="1"
+                          name="Data Conversion Output"
+                          synchronousInputId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Inputs[Data Conversion Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Outputs[Data Conversion Output].Columns[TypeCategoryName]"
+                              codePage="1252"
+                              dataType="str"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              length="9"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Outputs[Data Conversion Output].Columns[TypeCategoryName]"
+                              name="TypeCategoryName"
+                              truncationRowDisposition="FailComponent">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Specifies the input column used as the source of data for the conversion."
+                                  name="SourceInputColumnLineageID">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Outputs[Derived Column Output].Columns[TypeCategory]}</property>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                                  name="FastParse">false</property>
+                              </properties>
+                            </outputColumn>
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Outputs[Data Conversion Error Output]"
+                          exclusionGroup="1"
+                          isErrorOut="true"
+                          name="Data Conversion Error Output"
+                          synchronousInputId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Inputs[Data Conversion Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                              dataType="i4"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                              name="ErrorCode"
+                              specialFlags="1" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                              dataType="i4"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                              name="ErrorColumn"
+                              specialFlags="2" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                    <component
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates"
+                      componentClassID="{7F88F654-4E20-4D14-84F4-AF9C925D3087}"
+                      contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                      description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+                      name="Identify Updates"
+                      usesDispositions="true">
+                      <inputs>
+                        <input
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates.Inputs[Conditional Split Input]"
+                          description="Input to the Conditional Split Transformation"
+                          name="Conditional Split Input">
+                          <inputColumns>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates.Inputs[Conditional Split Input].Columns[ModTimestamp]"
+                              cachedDataType="date"
+                              cachedName="ModTimestamp"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[ModTimestamp]" />
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates.Inputs[Conditional Split Input].Columns[TgtModTimestamp]"
+                              cachedDataType="dbTimeStamp"
+                              cachedName="TgtModTimestamp"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Outputs[Lookup Match Output].Columns[TgtModTimestamp]" />
+                          </inputColumns>
+                          <externalMetadataColumns />
+                        </input>
+                      </inputs>
+                      <outputs>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates.Outputs[Updates]"
+                          description="Output 1 of the Conditional Split Transformation"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          exclusionGroup="1"
+                          name="Updates"
+                          synchronousInputId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates.Inputs[Conditional Split Input]"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                              name="Expression">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[ModTimestamp]} != #{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Outputs[Lookup Match Output].Columns[TgtModTimestamp]}</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Specifies the friendly version of the expression. This expression version uses column names."
+                              expressionType="Notify"
+                              name="FriendlyExpression">ModTimestamp != TgtModTimestamp</property>
+                            <property
+                              dataType="System.Int32"
+                              description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                              name="EvaluationOrder">0</property>
+                          </properties>
+                          <externalMetadataColumns />
+                        </output>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates.Outputs[No Changes]"
+                          description="Default Output of the Conditional Split Transformation"
+                          exclusionGroup="1"
+                          name="No Changes"
+                          synchronousInputId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates.Inputs[Conditional Split Input]">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              name="IsDefaultOut">true</property>
+                          </properties>
+                          <externalMetadataColumns />
+                        </output>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates.Outputs[Conditional Split Error Output]"
+                          description="Error Output of the Conditional Split Transformation"
+                          exclusionGroup="1"
+                          isErrorOut="true"
+                          name="Conditional Split Error Output"
+                          synchronousInputId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates.Inputs[Conditional Split Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                              dataType="i4"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                              name="ErrorCode"
+                              specialFlags="1" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                              dataType="i4"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                              name="ErrorColumn"
+                              specialFlags="2" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                    <component
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies"
+                      componentClassID="{4ADA7EAA-136C-4215-8098-D7A7C27FC0D1}"
+                      contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                      description="OLE DB Destination"
+                      name="Land Hierarchies"
+                      usesDispositions="true"
+                      version="4">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                          name="CommandTimeout">0</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the name of the database object used to open a rowset."
+                          name="OpenRowset">[lnd].[hierarchies]</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the variable that contains the name of the database object used to open a rowset."
+                          name="OpenRowsetVariable"></property>
+                        <property
+                          dataType="System.String"
+                          description="The SQL command to be executed."
+                          name="SqlCommand"
+                          UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the column code page to use when code page information is unavailable from the data source."
+                          name="DefaultCodePage">1252</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Forces the use of the DefaultCodePage property value when describing character data."
+                          name="AlwaysUseDefaultCodePage">false</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the mode used to access the database."
+                          name="AccessMode"
+                          typeConverter="AccessMode">3</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                          name="FastLoadKeepIdentity">true</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                          name="FastLoadKeepNulls">true</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                          name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                          name="FastLoadMaxInsertCommitSize">2147483647</property>
+                      </properties>
+                      <connections>
+                        <connection
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Connections[OleDbConnection]"
+                          connectionManagerID="Package.ConnectionManagers[localhost.FLOW_DW_DB.biadmin1]"
+                          connectionManagerRefId="Package.ConnectionManagers[localhost.FLOW_DW_DB.biadmin1]"
+                          description="The OLE DB runtime connection used to access the database."
+                          name="OleDbConnection" />
+                      </connections>
+                      <inputs>
+                        <input
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input]"
+                          errorOrTruncationOperation="Insert"
+                          errorRowDisposition="FailComponent"
+                          hasSideEffects="true"
+                          name="OLE DB Destination Input">
+                          <inputColumns>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].Columns[_id]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="50"
+                              cachedName="_id"
+                              externalMetadataColumnId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].ExternalColumns[_id]"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[_id]" />
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].Columns[description]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="50"
+                              cachedName="description"
+                              externalMetadataColumnId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].ExternalColumns[description]"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[description]" />
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].Columns[active]"
+                              cachedDataType="bool"
+                              cachedName="active"
+                              externalMetadataColumnId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].ExternalColumns[active]"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[active]" />
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].Columns[order]"
+                              cachedDataType="i4"
+                              cachedName="order"
+                              externalMetadataColumnId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].ExternalColumns[order]"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[order]" />
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].Columns[ModTimestamp]"
+                              cachedDataType="date"
+                              cachedName="ModTimestamp"
+                              externalMetadataColumnId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].ExternalColumns[ModTimestamp]"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[ModTimestamp]" />
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].Columns[BatchKey]"
+                              cachedDataType="i4"
+                              cachedName="BatchKey"
+                              externalMetadataColumnId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].ExternalColumns[BatchKey]"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Outputs[Derived Column Output].Columns[BatchKey]" />
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].Columns[name]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="50"
+                              cachedName="name"
+                              externalMetadataColumnId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].ExternalColumns[name]"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1].Columns[name]" />
+                          </inputColumns>
+                          <externalMetadataColumns
+                            isUsed="True">
+                            <externalMetadataColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].ExternalColumns[_id]"
+                              codePage="1252"
+                              dataType="str"
+                              length="50"
+                              name="_id" />
+                            <externalMetadataColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].ExternalColumns[BatchKey]"
+                              dataType="i4"
+                              name="BatchKey" />
+                            <externalMetadataColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].ExternalColumns[name]"
+                              codePage="1252"
+                              dataType="str"
+                              length="50"
+                              name="name" />
+                            <externalMetadataColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].ExternalColumns[description]"
+                              codePage="1252"
+                              dataType="str"
+                              length="50"
+                              name="description" />
+                            <externalMetadataColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].ExternalColumns[active]"
+                              dataType="bool"
+                              name="active" />
+                            <externalMetadataColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].ExternalColumns[order]"
+                              dataType="i4"
+                              name="order" />
+                            <externalMetadataColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input].ExternalColumns[ModTimestamp]"
+                              dataType="dbTimeStamp"
+                              name="ModTimestamp" />
+                          </externalMetadataColumns>
+                        </input>
+                      </inputs>
+                      <outputs>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Outputs[OLE DB Destination Error Output]"
+                          exclusionGroup="1"
+                          isErrorOut="true"
+                          name="OLE DB Destination Error Output"
+                          synchronousInputId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                              dataType="i4"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                              name="ErrorCode"
+                              specialFlags="1" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                              dataType="i4"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                              name="ErrorColumn"
+                              specialFlags="2" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                    <component
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies"
+                      componentClassID="{671046B0-AA63-4C9F-90E4-C06E0B710CE3}"
+                      contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+                      description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+                      name="Lookup Target Hierarchies"
+                      usesDispositions="true"
+                      version="6">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the SQL statement that generates the lookup table."
+                          expressionType="Notify"
+                          name="SqlCommand"
+                          UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select * from [lnd].[hierarchies]</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                          expressionType="Notify"
+                          name="SqlCommandParam"
+                          UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select * from (select * from [lnd].[hierarchies]) [refTable]
+where [refTable].[_id] = ?</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the type of connection used to access the reference dataset."
+                          name="ConnectionType"
+                          typeConverter="LookupConnectionType">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the cache type of the lookup table."
+                          name="CacheType"
+                          typeConverter="CacheType">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                          name="NoMatchBehavior"
+                          typeConverter="LookupNoMatchBehavior">1</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                          name="NoMatchCachePercentage">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                          name="MaxMemoryUsage">25</property>
+                        <property
+                          dataType="System.Int64"
+                          description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                          name="MaxMemoryUsage64">25</property>
+                        <property
+                          dataType="System.String"
+                          description="Indicates whether to reference metadata in an XML format."
+                          name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="_id" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="BatchKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="description" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="active" dataType="DT_BOOL" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="order" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ModTimestamp" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                          name="ParameterMap">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[_id]};</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the column code page to use when code page information is unavailable from the data source."
+                          name="DefaultCodePage">1252</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                          name="TreatDuplicateKeysAsError">false</property>
+                      </properties>
+                      <connections>
+                        <connection
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Connections[OleDbConnection]"
+                          connectionManagerID="Package.ConnectionManagers[localhost.FLOW_DW_DB.biadmin1]"
+                          connectionManagerRefId="Package.ConnectionManagers[localhost.FLOW_DW_DB.biadmin1]"
+                          description="Connection manager used to access lookup data."
+                          name="OleDbConnection" />
+                      </connections>
+                      <inputs>
+                        <input
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Inputs[Lookup Input]"
+                          name="Lookup Input">
+                          <inputColumns>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Inputs[Lookup Input].Columns[_id]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="50"
+                              cachedName="_id"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[_id]">
+                              <properties>
+                                <property
+                                  dataType="System.String"
+                                  description="Specifies the column in the reference table that a column joins."
+                                  name="JoinToReferenceColumn">_id</property>
+                                <property
+                                  dataType="System.Null"
+                                  description="Specifies the column in the reference table from which a column is copied."
+                                  name="CopyFromReferenceColumn" />
+                              </properties>
+                            </inputColumn>
+                          </inputColumns>
+                          <externalMetadataColumns />
+                        </input>
+                      </inputs>
+                      <outputs>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Outputs[Lookup Match Output]"
+                          errorOrTruncationOperation="Lookup"
+                          exclusionGroup="1"
+                          name="Lookup Match Output"
+                          synchronousInputId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Inputs[Lookup Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Outputs[Lookup Match Output].Columns[TgtModTimestamp]"
+                              dataType="dbTimeStamp"
+                              errorOrTruncationOperation="Copy Column"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Outputs[Lookup Match Output].Columns[TgtModTimestamp]"
+                              name="TgtModTimestamp"
+                              truncationRowDisposition="FailComponent">
+                              <properties>
+                                <property
+                                  dataType="System.String"
+                                  description="Specifies the column in the reference table from which a column is copied."
+                                  name="CopyFromReferenceColumn">ModTimestamp</property>
+                              </properties>
+                            </outputColumn>
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Outputs[Lookup No Match Output]"
+                          description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                          exclusionGroup="1"
+                          name="Lookup No Match Output"
+                          synchronousInputId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Inputs[Lookup Input]">
+                          <externalMetadataColumns />
+                        </output>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Outputs[Lookup Error Output]"
+                          exclusionGroup="1"
+                          isErrorOut="true"
+                          name="Lookup Error Output"
+                          synchronousInputId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Inputs[Lookup Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                              dataType="i4"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                              name="ErrorCode"
+                              specialFlags="1" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                              dataType="i4"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                              name="ErrorColumn"
+                              specialFlags="2" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                    <component
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category"
+                      componentClassID="{671046B0-AA63-4C9F-90E4-C06E0B710CE3}"
+                      contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+                      description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+                      name="Lookup Type Category"
+                      usesDispositions="true"
+                      version="6">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the SQL statement that generates the lookup table."
+                          expressionType="Notify"
+                          name="SqlCommand"
+                          UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select * from [lnd].[typeCategories]</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                          expressionType="Notify"
+                          name="SqlCommandParam"
+                          UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">select * from (select * from [lnd].[typeCategories]) [refTable]
+where [refTable].[name] = ?</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the type of connection used to access the reference dataset."
+                          name="ConnectionType"
+                          typeConverter="LookupConnectionType">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the cache type of the lookup table."
+                          name="CacheType"
+                          typeConverter="CacheType">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                          name="NoMatchBehavior"
+                          typeConverter="LookupNoMatchBehavior">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                          name="NoMatchCachePercentage">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                          name="MaxMemoryUsage">25</property>
+                        <property
+                          dataType="System.Int64"
+                          description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                          name="MaxMemoryUsage64">25</property>
+                        <property
+                          dataType="System.String"
+                          description="Indicates whether to reference metadata in an XML format."
+                          name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="TypeCategoryKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="BatchKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="name" dataType="DT_STR" length="25" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="description" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                          name="ParameterMap">#{Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Outputs[Data Conversion Output].Columns[TypeCategoryName]};</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the column code page to use when code page information is unavailable from the data source."
+                          name="DefaultCodePage">1252</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                          name="TreatDuplicateKeysAsError">false</property>
+                      </properties>
+                      <connections>
+                        <connection
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Connections[OleDbConnection]"
+                          connectionManagerID="Package.ConnectionManagers[localhost.FLOW_DW_DB.biadmin1]"
+                          connectionManagerRefId="Package.ConnectionManagers[localhost.FLOW_DW_DB.biadmin1]"
+                          description="Connection manager used to access lookup data."
+                          name="OleDbConnection" />
+                      </connections>
+                      <inputs>
+                        <input
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Inputs[Lookup Input]"
+                          name="Lookup Input">
+                          <inputColumns>
+                            <inputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Inputs[Lookup Input].Columns[TypeCategoryName]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="9"
+                              cachedName="TypeCategoryName"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Outputs[Data Conversion Output].Columns[TypeCategoryName]">
+                              <properties>
+                                <property
+                                  dataType="System.String"
+                                  description="Specifies the column in the reference table that a column joins."
+                                  name="JoinToReferenceColumn">name</property>
+                                <property
+                                  dataType="System.Null"
+                                  description="Specifies the column in the reference table from which a column is copied."
+                                  name="CopyFromReferenceColumn" />
+                              </properties>
+                            </inputColumn>
+                          </inputColumns>
+                          <externalMetadataColumns />
+                        </input>
+                      </inputs>
+                      <outputs>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Outputs[Lookup Match Output]"
+                          errorOrTruncationOperation="Lookup"
+                          errorRowDisposition="FailComponent"
+                          exclusionGroup="1"
+                          name="Lookup Match Output"
+                          synchronousInputId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Inputs[Lookup Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Outputs[Lookup Match Output].Columns[TypeCategoryKey]"
+                              dataType="i4"
+                              errorOrTruncationOperation="Copy Column"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Outputs[Lookup Match Output].Columns[TypeCategoryKey]"
+                              name="TypeCategoryKey"
+                              truncationRowDisposition="FailComponent">
+                              <properties>
+                                <property
+                                  dataType="System.String"
+                                  description="Specifies the column in the reference table from which a column is copied."
+                                  name="CopyFromReferenceColumn">TypeCategoryKey</property>
+                              </properties>
+                            </outputColumn>
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Outputs[Lookup No Match Output]"
+                          description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                          exclusionGroup="1"
+                          name="Lookup No Match Output"
+                          synchronousInputId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Inputs[Lookup Input]">
+                          <externalMetadataColumns />
+                        </output>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Outputs[Lookup Error Output]"
+                          exclusionGroup="1"
+                          isErrorOut="true"
+                          name="Lookup Error Output"
+                          synchronousInputId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Inputs[Lookup Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                              dataType="i4"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                              name="ErrorCode"
+                              specialFlags="1" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                              dataType="i4"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                              name="ErrorColumn"
+                              specialFlags="2" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                    <component
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies"
+                      componentClassID="{874F7595-FB5F-40FF-96AF-FBFF8250E3EF}"
+                      contactInfo="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum.;Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;8"
+                      description="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum."
+                      localeId="1033"
+                      name="Read Mongo Hierarchies"
+                      version="8">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Stores the source code of the component"
+                          isArray="true"
+                          name="SourceCode"
+                          state="cdata">
+                          <arrayElements
+                            arrayElementCount="30">
+                            <arrayElement
+                              dataType="System.String"><![CDATA[BufferWrapper.vb]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[' THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+' Microsoft SQL Server Integration Services buffer wrappers
+' This module defines classes for accessing data flow buffers
+' THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+
+
+Option Strict Off   ' This allows usage of PipelineBuffer typed accessors.
+
+Imports System
+Imports System.Data
+Imports Microsoft.SqlServer.Dts.Pipeline
+Imports Microsoft.SqlServer.Dts.Pipeline.Wrapper
+
+<CLSCompliant(False)> _
+Public Class outEquipmentBuffer
+    Inherits ScriptBuffer
+
+    Public Sub New(ByVal Buffer As PipelineBuffer, ByVal BufferColumnIndexes As Integer(), ByVal OutputMap As OutputNameMap)
+        MyBase.New(Buffer, BufferColumnIndexes, OutputMap)
+    End Sub
+
+    Public WriteOnly Property [id]() As String
+        Set
+            Me(0) = Value
+        End Set
+    End Property
+    Public WriteOnly Property [id_IsNull] As Boolean
+        Set
+            If (value)
+                SetNull(0)
+            Else
+                Throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.")
+            End If
+        End Set
+    End Property
+
+    Public WriteOnly Property [name]() As String
+        Set
+            Me(1) = Value
+        End Set
+    End Property
+    Public WriteOnly Property [name_IsNull] As Boolean
+        Set
+            If (value)
+                SetNull(1)
+            Else
+                Throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.")
+            End If
+        End Set
+    End Property
+
+    Public WriteOnly Property [description]() As String
+        Set
+            Me(2) = Value
+        End Set
+    End Property
+    Public WriteOnly Property [description_IsNull] As Boolean
+        Set
+            If (value)
+                SetNull(2)
+            Else
+                Throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.")
+            End If
+        End Set
+    End Property
+
+    Public WriteOnly Property [active]() As Boolean
+        Set
+            Me(3) = Value
+        End Set
+    End Property
+    Public WriteOnly Property [active_IsNull] As Boolean
+        Set
+            If (value)
+                SetNull(3)
+            Else
+                Throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.")
+            End If
+        End Set
+    End Property
+
+    Public WriteOnly Property [order]() As Int32
+        Set
+            Me(4) = Value
+        End Set
+    End Property
+    Public WriteOnly Property [order_IsNull] As Boolean
+        Set
+            If (value)
+                SetNull(4)
+            Else
+                Throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.")
+            End If
+        End Set
+    End Property
+
+    Public WriteOnly Property [ModTimestamp]() As DateTime
+        Set
+            Me(5) = Value
+        End Set
+    End Property
+    Public WriteOnly Property [ModTimestamp_IsNull] As Boolean
+        Set
+            If (value)
+                SetNull(5)
+            Else
+                Throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.")
+            End If
+        End Set
+    End Property
+
+    Public Overloads Sub AddRow()
+        MyBase.AddRow()
+    End Sub
+
+    Public Overloads Sub SetEndOfRowset()
+        MyBase.SetEndOfRowset()
+    End Sub
+
+    Public Overloads Function EndOfRowset() As Boolean
+        EndOfRowset = MyBase.EndOfRowset
+    End Function
+
+End Class
+]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[main.vb]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[#Region "Help:  Introduction to the Script Component"
+' The Script Component allows you to perform virtually any operation that can be accomplished in
+' a .Net application within the context of an Integration Services data flow.
+
+' Expand the other regions which have "Help" prefixes for examples of specific ways to use
+' Integration Services features within this script component.
+#End Region
+
+#Region "Imports"
+Imports System
+Imports System.Data
+Imports System.Math
+Imports Microsoft.SqlServer.Dts.Pipeline.Wrapper
+Imports Microsoft.SqlServer.Dts.Runtime.Wrapper
+Imports MongoDB.Bson
+Imports MongoDB.Driver
+Imports MongoDB.Bson.Serialization
+Imports Microsoft.SqlServer.Dts.Pipeline.DtsPipelineComponentAttribute
+#End Region
+
+' This is the class to which to add your code.  Do not change the name, attributes, or parent
+' of this class.
+<Microsoft.SqlServer.Dts.Pipeline.SSISScriptComponentEntryPointAttribute()> _
+<CLSCompliant(False)> _
+Public Class ScriptMain
+    Inherits UserComponent
+
+    Private mongoinstance As MongoServer
+    Private database As MongoDatabase
+    Private connectionString As String
+    Private mongoclient As MongoClient
+    Private dbName As String
+
+    'This method is called once, before rows begin to be processed in the data flow.
+
+    Public Overrides Sub PreExecute()
+        MyBase.PreExecute()
+
+        connectionString = "mongodb://localhost"
+        mongoclient = New MongoClient(connectionString)
+        mongoinstance = mongoclient.GetServer()
+        dbName = "dispatch"
+        database = mongoinstance.GetDatabase(dbName)
+
+    End Sub
+
+    ' This method is called after all the rows have passed through this component.
+
+    Public Overrides Sub PostExecute()
+        MyBase.PostExecute()
+
+        mongoinstance.Disconnect()
+
+    End Sub
+
+    Public Overrides Sub CreateNewOutputRows()
+
+        Dim document As BsonDocument
+
+
+        For Each document In database.GetCollection("hierarchies").FindAll
+            Me.outEquipmentBuffer.AddRow()
+            Me.outEquipmentBuffer.id = document("_id").ToString
+            Me.outEquipmentBuffer.name = document("name").ToString
+            Me.outEquipmentBuffer.description = document.GetValue("description", "?").ToString
+            Me.outEquipmentBuffer.order = document.GetValue("order", 1).ToInt32
+            Me.outEquipmentBuffer.active = document.GetValue("active", "true").ToBoolean
+            Me.outEquipmentBuffer.ModTimestamp = document("mod").AsBsonDocument("at").ToLocalTime
+
+        Next
+
+    End Sub
+
+End Class
+
+]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[My Project\AssemblyInfo.vb]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[Imports System
+Imports System.Reflection
+Imports System.Runtime.InteropServices
+
+' General Information about an assembly is controlled through the following 
+' set of attributes. Change these attribute values to modify the information
+' associated with an assembly.
+
+' Review the values of the assembly attributes
+
+<Assembly: AssemblyTitle("SC_5526bf7b2f524a929796e896d9e6f557")> 
+<Assembly: AssemblyDescription("")> 
+<Assembly: AssemblyCompany("MS")> 
+<Assembly: AssemblyProduct("SC_5526bf7b2f524a929796e896d9e6f557")> 
+<Assembly: AssemblyCopyright("Copyright @ MS 2013")> 
+<Assembly: AssemblyTrademark("")> 
+<Assembly: CLSCompliant(True)> 
+
+<Assembly: ComVisible(False)> 
+
+'The following GUID is for the ID of the typelib if this project is exposed to COM
+<Assembly: Guid("f50c08c8-d044-4c3b-93b6-20b7fb33dca6")> 
+
+' Version information for an assembly consists of the following four values:
+'
+'      Major Version
+'      Minor Version 
+'      Build Number
+'      Revision
+'
+' You can specify all the values or you can default the Build and Revision Numbers 
+' by using the '*' as shown below:
+' <Assembly: AssemblyVersion("1.0.*")>
+
+<Assembly: AssemblyVersion("1.0.0.0")> 
+<Assembly: AssemblyFileVersion("1.0.0.0")> 
+]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[ComponentWrapper.vb]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[' THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+' Microsoft SQL Server Integration Services component wrapper
+' This module defines the base class for your component
+' THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+
+Imports System
+Imports System.Data
+Imports Microsoft.SqlServer.Dts.Pipeline
+Imports Microsoft.SqlServer.Dts.Pipeline.Wrapper
+Imports Microsoft.SqlServer.Dts.Runtime.Wrapper
+
+<CLSCompliant(False)> _
+Public Class UserComponent
+    Inherits ScriptComponent
+
+    Public Connections As New Connections(Me)
+    Public Variables As New Variables(Me)
+
+    Public outEquipmentBuffer As outEquipmentBuffer
+
+    Public Overridable Sub FinishOutputs()
+    End Sub
+
+    Private Sub MarkOutputsFinished()
+
+        If outEquipmentBuffer IsNot Nothing Then
+            outEquipmentBuffer.SetEndOfRowset
+            outEquipmentBuffer = Nothing
+        End If
+
+    End Sub
+
+    Public Overrides Sub PrimeOutput(ByVal Outputs As Integer, ByVal OutputIDs() As Integer, ByVal Buffers() As PipelineBuffer, ByVal OutputMap As OutputNameMap)
+
+        For I As Integer = 0 To Outputs - 1
+            If OutputIDs(I) = GetOutputID(OutputMap, "outEquipment") Then
+                outEquipmentBuffer = New outEquipmentBuffer(Buffers(I), GetColumnIndexes(OutputIDs(I)), OutputMap)
+            End If
+        Next
+
+        CreateNewOutputRows()
+
+        FinishOutputs()
+        MarkOutputsFinished()
+
+    End Sub
+
+    Public Overridable Sub CreateNewOutputRows()
+    End Sub
+
+End Class
+
+<CLSCompliant(False)> _
+Public Class Connections
+
+    Dim ParentComponent As ScriptComponent
+
+    <CLSCompliant(False)> _
+    Public Sub New(ByVal Component As ScriptComponent)
+        ParentComponent = Component
+    End Sub
+
+End Class
+
+<CLSCompliant(False)> _
+Public Class Variables
+
+    Dim ParentComponent As ScriptComponent
+
+    <CLSCompliant(False)> _
+    Public Sub New(ByVal Component As ScriptComponent)
+        ParentComponent = Component
+    End Sub
+
+End Class
+]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[My Project\Settings.settings]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)" GeneratedClassNamespace="" GeneratedClassName="MySettings">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[My Project\Settings.Designer.vb]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA['------------------------------------------------------------------------------
+' <autogenerated>
+'     This code was generated by a tool.
+'
+'     Changes to this file may cause incorrect behavior and will be lost if
+'     the code is regenerated.
+' </autogenerated>
+'------------------------------------------------------------------------------
+
+Option Strict Off
+Option Explicit On
+
+
+
+Partial Friend NotInheritable Class MySettings
+    Inherits System.Configuration.ApplicationSettingsBase
+
+    Private Shared m_Value As MySettings
+
+    Private Shared m_SyncObject As Object = New Object
+
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Public Shared ReadOnly Property Value() As MySettings
+        Get
+            If (MySettings.m_Value Is Nothing) Then
+                System.Threading.Monitor.Enter(MySettings.m_SyncObject)
+                If (MySettings.m_Value Is Nothing) Then
+                    Try
+                        MySettings.m_Value = New MySettings
+                    Finally
+                        System.Threading.Monitor.Exit(MySettings.m_SyncObject)
+                    End Try
+                End If
+            End If
+            Return MySettings.m_Value
+        End Get
+    End Property
+End Class
+]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[Project]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[UTF16LE]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="3.0" schemaVersion="1.0">
+	<msb:PropertyGroup>
+		<msb:CodeName>SC_5526bf7b2f524a929796e896d9e6f557</msb:CodeName>
+		<msb:DisplayName>SC_5526bf7b2f524a929796e896d9e6f557</msb:DisplayName>
+		<msb:ProjectId>{A55CF50D-70D8-411B-AEE9-39329CA2F826}</msb:ProjectId>
+		<msb:Language>msBuild</msb:Language>
+	</msb:PropertyGroup>
+	<msb:ItemGroup>
+		<msb:Project Include="SC_5526bf7b2f524a929796e896d9e6f557.vbproj"/>
+		<msb:File Include="My Project\Settings.Designer.vb"/>
+		<msb:File Include="My Project\Resources.Designer.vb"/>
+		<msb:File Include="My Project\AssemblyInfo.vb"/>
+		<msb:File Include="My Project\Resources.resx"/>
+		<msb:File Include="My Project\Settings.settings"/>
+		<msb:File Include="main.vb"/>
+		<msb:File Include="ComponentWrapper.vb"/>
+		<msb:File Include="BufferWrapper.vb"/>
+	</msb:ItemGroup>
+</c:Project>]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[My Project\Resources.resx]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+</root>]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[SC_5526bf7b2f524a929796e896d9e6f557.vbproj]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1BFFC64A-A5DB-45BE-A91D-48729CC94A1E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>My Project</AppDesignerFolder>
+    <RootNamespace>SC_5526bf7b2f524a929796e896d9e6f557</RootNamespace>
+    <AssemblyName>SC_5526bf7b2f524a929796e896d9e6f557</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- This sections specifies references for the project. -->
+  <ItemGroup>
+    <Reference Include="MongoDB.Bson, Version=1.8.1.20, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\MongoDB\CSharpDriver 1.8.1\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=1.8.1.20, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\MongoDB\CSharpDriver 1.8.1\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.TxScript, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSRuntimeWrap, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSPipelineWrap, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.PipelineHost, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Compile Include="main.vb" />
+    <Compile Include="BufferWrapper.vb" />
+    <Compile Include="ComponentWrapper.vb" />
+  </ItemGroup>
+  <!-- Visual Basic supports Importing namespaces (equivalent to using statements in C#).-->
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="My Project\" />
+    <Compile Include="My Project\AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <!-- Include the build rules for a VB project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- This section defines VSTA properties that describe the host-changable project properties. -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="vb" TemplatesPath="" DebugInfoExeName="devenv.exe" DebugInfoCommandLine="/vstaHostDebugUri:&quot;vstadebugb8e6a104-92d6-428e-9325-ab493951dfa5/90977b4a-618f-4eca-9632-46b4e4534372&quot;" />
+        <Host Name="SSIS_SC110" />
+        <ProjectClient>
+          <HostIdentifier>SSIS_SC110</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[My Project\Resources.Designer.vb]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA['------------------------------------------------------------------------------
+' <autogenerated>
+'     This code was generated by a tool.
+'
+'     Changes to this file may cause incorrect behavior and will be lost if
+'     the code is regenerated.
+' </autogenerated>
+'------------------------------------------------------------------------------
+
+Option Strict Off
+Option Explicit On
+
+
+Namespace My.Resources
+    
+    '''<summary>
+    '''   A strongly-typed resource class, for looking up localized strings, etc.
+    '''</summary>
+    'This class was auto-generated by the Strongly Typed Resource Builder
+    'class via a tool like ResGen or Visual Studio.NET.
+    'To add or remove a member, edit your .ResX file then rerun ResGen
+    'with the /str option, or rebuild your VS project.
+    Class MyResources
+        
+        Private Shared _resMgr As System.Resources.ResourceManager
+        
+        Private Shared _resCulture As System.Globalization.CultureInfo
+        
+        Friend Sub New()
+            MyBase.New
+        End Sub
+        
+        '''<summary>
+        '''   Returns the cached ResourceManager instance used by this class.
+        '''</summary>
+        <System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)>  _
+        Public Shared ReadOnly Property ResourceManager() As System.Resources.ResourceManager
+            Get
+                If (_resMgr Is Nothing) Then
+                    Dim temp As System.Resources.ResourceManager = New System.Resources.ResourceManager("My.Resources.MyResources", GetType(MyResources).Assembly)
+                    _resMgr = temp
+                End If
+                Return _resMgr
+            End Get
+        End Property
+        
+        '''<summary>
+        '''   Overrides the current thread's CurrentUICulture property for all
+        '''   resource lookups using this strongly typed resource class.
+        '''</summary>
+        <System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)>  _
+        Public Shared Property Culture() As System.Globalization.CultureInfo
+            Get
+                Return _resCulture
+            End Get
+            Set
+                _resCulture = value
+            End Set
+        End Property
+    End Class
+End Namespace
+]]></arrayElement>
+                          </arrayElements>
+                        </property>
+                        <property
+                          dataType="System.String"
+                          description="Stores the binary representation of the component"
+                          isArray="true"
+                          name="BinaryCode"
+                          state="cdata">
+                          <arrayElements
+                            arrayElementCount="2">
+                            <arrayElement
+                              dataType="System.String"><![CDATA[SC_5526bf7b2f524a929796e896d9e6f557.dll]]></arrayElement>
+                            <arrayElement
+                              dataType="System.String"><![CDATA[TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAFqlvlEAAAAAAAAAAOAAAiELAQgAACgAAAAIAAAAAAAAnkYA
+AAAgAAAAYAAAAABAAAAgAAAAAgAABAAAAAAAAAAEAAAAAAAAAACgAAAAAgAAAAAAAAIAQIUAABAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAExGAABPAAAAAGAAAAgEAAAAAAAAAAAAAAAAAAAA
+AAAAAIAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAApCYAAAAgAAAAKAAAAAIA
+AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAAgEAAAAYAAAAAYAAAAqAAAAAAAAAAAAAAAAAABAAABA
+LnJlbG9jAAAMAAAAAIAAAAACAAAAMAAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAACA
+RgAAAAAAAEgAAAACAAUAECcAADwfAAABAAAAAAAAAFgmAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4CKAEAAAoqHgIoBAAACiqmcwYAAAqAAQAABHMHAAAKgAIA
+AARzCAAACoADAAAEcwkAAAqABAAABCoAABMwAQALAAAAAQAAEX4BAAAEbwoAAAoqABMwAQALAAAA
+AgAAEX4CAAAEbwsAAAoqABMwAQALAAAAAwAAEX4DAAAEbwwAAAoqABMwAQALAAAABAAAEX4EAAAE
+bw0AAAoqABMwAgANAAAABQAAEQIDKBEAAAooEgAACioAAAATMAEABwAAAAYAABECKBMAAAoqABMw
+AQALAAAABwAAEdAFAAACKBQAAAoqABMwAQAHAAAACAAAEQIoFQAACioAEzABABAAAAAJAAARAowB
+AAAbLQYoAQAAKyoCKhMwAgAQAAAACgAAEQMSAP4VAgAAGwaBAgAAGyoeAigXAAAKKhMwAgAoAAAA
+CwAAEQJ7GQAACm8aAAAKCweMAwAAGy0SKAIAACsLAnsZAAAKB28bAAAKBypKAigXAAAKAnMcAAAK
+fRkAAAoqACoCAwQFKB4AAAoqACYCFgNvHwAACioAAGIDLAkCFm8gAAAKKwtyAQAAcHMhAAAKeioA
+AAAmAhcDbx8AAAoqAABiAywJAhdvIAAACisLcgEAAHBzIQAACnoqAAAAJgIYA28fAAAKKgAAYgMs
+CQIYbyAAAAorC3IBAABwcyEAAAp6KgAAADoCGQOMHwAAAW8fAAAKKgBiAywJAhlvIAAACisLcgEA
+AHBzIQAACnoqAAAAOgIaA4wgAAABbx8AAAoqAGIDLAkCGm8gAAAKKwtyAQAAcHMhAAAKeioAAAA6
+AhsDjAoAAAFvHwAACioAYgMsCQIbbyAAAAorC3IBAABwcyEAAAp6KgAAAB4CKCIAAAoqHgIoIwAA
+CioTMAEACQAAAAwAABECKCQAAAoKBioAAAB+AigmAAAKAgJzJgAABn0GAAAEAgJzJwAABn0HAAAE
+KgYqAABuAnsIAAAELBICewgAAARvHwAABgIUfQgAAAQqEzAFAE0AAAANAAARFgMX2gsKKy4EBpQO
+BHKeAABwKCcAAAozGQIFBpoCBAaUbygAAAoOBHMRAAAGfQgAAAQGF9YKBgcxzgJvJQAABgJvIgAA
+BgJvIwAABioAAAAGKgAAOgIoFwAACgIDfQkAAAQqADoCKBcAAAoCA30KAAAEKgAeAighAAAGKhMw
+AwBWAAAAAAAAAAIoKQAACgJyuAAAcH0NAAAEAgJ7DQAABHMqAAAKfQ4AAAQCAnsOAAAEbysAAAp9
+CwAABAJy4AAAcH0PAAAEAgJ7CwAABAJ7DwAABG8sAAAKfQwAAAQqAABKAigtAAAKAnsLAAAEby4A
+AAoqABswBAAVAQAADgAAEQJ7DAAABHLyAABwby8AAApvMAAACm8xAAAKCzjdAAAAB28yAAAKCgJ7
+CAAABG8eAAAGAnsIAAAEBnIKAQBwbzMAAApvFQAACm8SAAAGAnsIAAAEBnISAQBwbzMAAApvFQAA
+Cm8UAAAGAnsIAAAEBnIcAQBwcjQBAHAoNAAACm81AAAKbxUAAApvFgAABgJ7CAAABAZyOAEAcBco
+NgAACm81AAAKbzcAAApvGgAABgJ7CAAABAZyRAEAcHJSAQBwKDQAAApvNQAACm84AAAKbxgAAAYC
+ewgAAAQGclwBAHBvMwAACm85AAAKcmQBAHBvMwAACm86AAAKbxwAAAYHbzsAAAo6GP///94KBywG
+B288AAAK3CoAAABBHAAAAgAAAAAAAAAKAQAACgEAAAoAAAAAAAABHgIoFwAACioTMAIALQAAAA8A
+ABF+EAAABC0gcmoBAHDQDAAAAigUAAAKbz4AAApzPwAACgsHgBAAAAR+EAAABCoAAAATMAEABgAA
+ABAAABF+EQAABCoAAB4CgBEAAAQqQnMXAAAKKBEAAAqAEwAABCoAAAAeAihAAAAKKhswAQA/AAAA
+EQAAEX4SAAAELTJ+EwAABCgRAAAKKEEAAAp+EgAABC0cczEAAAaAEgAABN4QfhMAAAQoEQAACihC
+AAAK3H4SAAAEKgABEAAAAgAdAAwpABAAAAABtAAAAM7K774BAAAAkQAAAGxTeXN0ZW0uUmVzb3Vy
+Y2VzLlJlc291cmNlUmVhZGVyLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5l
+dXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkjU3lzdGVtLlJlc291cmNlcy5S
+dW50aW1lUmVzb3VyY2VTZXQCAAAAAAAAAAAAAABQQURQQURQtAAAAEJTSkIBAAEAAAAAAAwAAAB2
+NC4wLjMwMzE5AAAAAAUAbAAAAKwLAAAjfgAAGAwAAAwNAAAjU3RyaW5ncwAAAAAkGQAAnAEAACNV
+UwDAGgAAEAAAACNHVUlEAAAA0BoAAGwEAAAjQmxvYgAAAAAAAAACAAABVxWiCQkPAAAA+iUzABYA
+AAEAAAA5AAAADQAAABMAAAAyAAAAGQAAAE4AAAA8AAAAEQAAAAUAAAAUAAAAFQAAAAwAAAABAAAA
+CAAAAAEAAAACAAAAAwAAAAIAAAAAAOIMAQAAAAAACgB0AUoBCgCoAYoBBgC4AbEBCgAQAkoBBgCO
+ArEBCgAQA+YCDgBzA1IDEgChA1IDDgCwA1IDBgB2BLEBDgBQBVIDFgDlBdYFFgD/BdYFFgAnBtYF
+BgBuBl0GBgCbBoYGGgD8BucGGgBJBzMHGgBiBzMHGgCPB3cHBgC5B6YHCgD4B9EHCgAQCBMAGgBF
+CCgIBgB6CFoIBgCYCLEBBgC8CLEBCgDVCBMABgAZCfoIBgA+CbEBBgBYCbEBBgBgCbEBBgBmCbEB
+HgDHCboJBgDvCdQJFgD9CdYFFgAdCtYFIgDvCdQJHgBNCroJIgB2BLEBBgC5CqYKBgDOCrEBDgDi
+ClIDBgAbCwkLBgBCCzELBgBVC6YHBgCqC1oIBgDKC1oIBgACDOgLBgAbDAkLBgA4DPoIBgBGDAkL
+BgBhDAkLBgB8DAkLBgCVDAkLBgCuDAkLBgDLDAkLAAAAAAEAAAAAAAEAAQAAAAAAKQA3AAUAAQAB
+AAAAAABeADcACQABAAIAAAEQAGkANwANAAEAAwAFAQAAcwAAAA0ABQAIAAUBAACBAAAADQAFAA8A
+AQAAAJwArwAdAAYAEQABAAAA0wCvAC0ABgAhAAEAAADhAK8ADQAJACYAAQAAAO0ArwANAAoAJwAB
+AAAA9wCvACAACwAoAAAAAAACAQ4BDQAQACwAAAEQAD8BrwBFABIAMAAxANMBIAAxAPwBLQAxAB4C
+OgAxAEMCRwAhAB8DkAAGAOEA2gAGAO0A3gAGAJwA4gABALwF8gABALwF8gABAPEFBQEBAA0GCQEB
+ABYGDQEBADMGEAEBAD8GDQERAH4GFAERAKcGGAERABQHNgERABwHOgFQIAAAAAAGGIQBEwABAFgg
+AAAAAAYYhAETAAEAYCAAAAAAERi/ARcAAQCMIAAAAAATCMYBGwABAKQgAAAAABMI7AEoAAEAvCAA
+AAAAEwgVAjUAAQDUIAAAAAATCDMCQgABAOwgAAAAAEYCeQJjAAEACCEAAAAARgKCAmgAAgAcIQAA
+AACDAJMCbAACADQhAAAAAEYCmwJxAAIASCEAAAAAEQCkAngAAgBkIQAAAAABAMICgAADAIAhAAAA
+AAYYhAETAAQAiCEAAAAAAwjWAosABAC8IQAAAAAGGIQBEwAEANAhAAAAAAYYhAGmAAQA3CEAAAAA
+BgjjA7AABwDoIQAAAAAGCPADtQAIAAQiAAAAAAYI/gOwAAkAECIAAAAABggHBLUACgAsIgAAAAAG
+CBcEsAALADgiAAAAAAYIJwS1AAwAVCIAAAAABgg+BLUADQBkIgAAAAAGCEkEtQAOAIAiAAAAAAYI
+WwS6AA8AkCIAAAAABghlBLUAEACsIgAAAAAGCH8EvwARALwiAAAAAAYIkAS1ABIA2CIAAAAAhgCo
+BBMAEwDgIgAAAACGAK8EEwATAOgiAAAAAIYAvgTFABMAACMAAAAABhiEARMAEwAgIwAAAABGA2AF
+EwATACQjAAAAAAEAbgUTABMAQCMAAAAARgKCBeYAEwCcIwAAAABGA6gFEwAXAKAjAAAAAAYYhAH2
+ABcAsCMAAAAABhiEAfYAGADAIwAAAAAGGIQBEwAZAMgjAAAAAEYCRgYTABkALCQAAAAARgJRBhMA
+GQBAJAAAAABGAqgFEwAZAIAlAAAAAAMYhAETABkAiCUAAAAAFgizBhwBGQDEJQAAAAAWCMcGIQEZ
+ANglAAAAABYI0wYmARkA4CUAAAAAERi/ARcAGgD0JQAAAAAGGIQBEwAaAPwlAAAAABYIKQc9ARoA
+AAABAIACAAABALkCAAABALkCAAABAL4DAAACAMUDAAADANkDAAABAOoDAAABAOoDAAABAOoDAAAB
+AOoDAAABAOoDAAABAOoDAAABAOoDAAABAOoDAAABAOoDAAABAOoDAAABAOoDAAABAOoDAAABAI4F
+AAACAJYFAAADAKAFAAAEANkDAAABAMwFAAABAMwFAAABAOoDCQCEARMAkQCEAUcBoQCEAVYBEQCE
+ARMAqQCEARMAJACEARMALACEARMANACEARMAPACEARMAJADWAosALADWAosANADWAosAPADWAosA
+sQCEARMAuQCEARMAwQCEAbAAyQCJCPABGQB5AmMAGQCCAmgAKQCqCP0BGQCbAnEA2QDGCA0CGQCE
+ARMA4QCEAR0CRAAfA5AATAApB4sATADwCJoCTACEARMA6QCEAbUAOQCEAaYAOQAtCa8COQA2CboA
+8QCEAbAAOQCoBBMAOQCvBBMAOQC+BMUACQGEAbUAWQCEARMAWQB8CbUCWQCICbwCWQBGBhMAcQCE
+AbAAcQCZCccCYQCjCcwCWQBRBhMAYQCvCRMAaQAPCtICVAArCucCXAAzCvoCZABBCosAEQFXCg0D
+OQFgChQDEQFsChsDOQFgCiUDOQF1CmgAOQF9CsUAOQGHCiwDOQGaCjIDSQHFCsUAUQHaChMAWQGE
+ARMAKQAkC0YDeQCEAUwDiQCEARMAaQFKC2kDaQFQC2kDcQGEARMAeQGEAboAgQGEARMAiQGEAbAA
+kQGEAbAAmQGEAbAAoQGEAbAAqQGEAbAAsQGEAbAAuQGEAbAAwQGEAbAAyQGEAbAAKQCDAN8BLgBj
+AmIELgBbAjkELgAzApsDLgBTAiAELgBrAqkCLgBzAjkELgAjAnMDLgArAnwDLgA7AuMDLgBDAvAD
+LgDrAKkCLgArARoELgBLAqkCQAArAHUBQAATAE0BQwATAE0BQwAbAFwBSQCDAMsBYwAbAFwBYwAT
+AE0BaQCDAKoBgAArAHUBgwB7AHUBgwBzAHUBgwAbAFwBiQCDALcBoAArAHUBowDDACUCowATAE0B
+wAArAHUBwwATAE0BwwDrAKkC4AArAHUB4wArAakCAAETAE0BAAErAHUBAwErAakCIAETAE0BIAEr
+AHUBIwErAakCQAErAHUBQAETAE0BQwErAakCYAErAHUBYAETAE0BYwErAakCYwHrAXUBgAErAHUB
+oAErAHUBwAErAHUBwAETAE0B4AErAHUBAAITAE0BAAIrAHUBSQITAGADaQITAGADiQIbAnUBwAQr
+AakC4AQrAakClgGbAaABpQH1AfkBBAIJAhgCGAKgAvUBwgI4A1QDWwNuAwQAAQAGAAUABwAGAAwA
+EgANABQAAACoAU8AAABhAlQAAAAQAlkAAABtAl4AAAApA5gAAADKBMkAAADNBM0AAADXBMkAAADc
+BM0AAADoBMkAAAD0BM0AAAAHBc0AAAAOBc0AAAAcBdEAAAAiBc0AAAAvBdUAAAA8Bc0AAABuBiwB
+AADfBjEBAADqA0IBAgAEAAMAAgAFAAUAAgAGAAcAAgAHAAkAAgAPAAsAAQASAA0AAQATAA8AAQAU
+ABEAAQAVABMAAQAWABUAAQAXABcAAQAYABkAAQAZABsAAQAaAB0AAQAbAB8AAQAcACEAAQAdACMA
+AgAtACUAAgAuACcAAQAvACcAAgAyACkAdQB1AIgAegGBAYgBjwGHAo4C3gLxAgQDBIAAAAEAAAAA
+AAAAAAAAAAAArwAAAAQAAAAAAAAAAAAAAAEACgAAAAAACgAAAAAAAAAAAAAACgATAAAAAAALAAAA
+AAAAAAAAAACdADUDAAAAAAsAAAAAAAAAAAAAAJ0AgAMAAAAAAQAIAAEAFAAAAAAA/ADWBQAAAAAE
+AAAAAAAAAAAAAAABALEBAAAAAAEACAABABQAAAAAAPwAugkAAAAAAgAAAAAAAAAAAAAAAQAKAAAA
+AAAAAAAAAQAAAHILAAAFAAQABgAEAAAAEAAMALcCAAAQABkAtwIAAAAAGwC3Ai0AEwItAJUCAAAA
+AAA8TW9kdWxlPgBtc2NvcmxpYgBNaWNyb3NvZnQuVmlzdWFsQmFzaWMATXlBcHBsaWNhdGlvbgBT
+Q181NTI2YmY3YjJmNTI0YTkyOTc5NmU4OTZkOWU2ZjU1Ny5NeQBNeUNvbXB1dGVyAE15UHJvamVj
+dABNeVdlYlNlcnZpY2VzAFRocmVhZFNhZmVPYmplY3RQcm92aWRlcmAxAG91dEVxdWlwbWVudEJ1
+ZmZlcgBTQ181NTI2YmY3YjJmNTI0YTkyOTc5NmU4OTZkOWU2ZjU1NwBVc2VyQ29tcG9uZW50AENv
+bm5lY3Rpb25zAFZhcmlhYmxlcwBTY3JpcHRNYWluAE15UmVzb3VyY2VzAFNDXzU1MjZiZjdiMmY1
+MjRhOTI5Nzk2ZTg5NmQ5ZTZmNTU3Lk15LlJlc291cmNlcwBNeVNldHRpbmdzAE1pY3Jvc29mdC5W
+aXN1YWxCYXNpYy5BcHBsaWNhdGlvblNlcnZpY2VzAEFwcGxpY2F0aW9uQmFzZQAuY3RvcgBNaWNy
+b3NvZnQuVmlzdWFsQmFzaWMuRGV2aWNlcwBDb21wdXRlcgBTeXN0ZW0AT2JqZWN0AC5jY3RvcgBn
+ZXRfQ29tcHV0ZXIAbV9Db21wdXRlck9iamVjdFByb3ZpZGVyAGdldF9BcHBsaWNhdGlvbgBtX0Fw
+cE9iamVjdFByb3ZpZGVyAFVzZXIAZ2V0X1VzZXIAbV9Vc2VyT2JqZWN0UHJvdmlkZXIAZ2V0X1dl
+YlNlcnZpY2VzAG1fTXlXZWJTZXJ2aWNlc09iamVjdFByb3ZpZGVyAEFwcGxpY2F0aW9uAFdlYlNl
+cnZpY2VzAEVxdWFscwBvAEdldEhhc2hDb2RlAFR5cGUAR2V0VHlwZQBUb1N0cmluZwBDcmVhdGVf
+X0luc3RhbmNlX18AVABpbnN0YW5jZQBEaXNwb3NlX19JbnN0YW5jZV9fAGdldF9HZXRJbnN0YW5j
+ZQBNaWNyb3NvZnQuVmlzdWFsQmFzaWMuTXlTZXJ2aWNlcy5JbnRlcm5hbABDb250ZXh0VmFsdWVg
+MQBtX0NvbnRleHQAR2V0SW5zdGFuY2UATWljcm9zb2Z0LlNxbFNlcnZlci5UeFNjcmlwdABNaWNy
+b3NvZnQuU3FsU2VydmVyLkR0cy5QaXBlbGluZQBTY3JpcHRCdWZmZXIATWljcm9zb2Z0LlNxbFNl
+cnZlci5QaXBlbGluZUhvc3QAUGlwZWxpbmVCdWZmZXIAT3V0cHV0TmFtZU1hcABCdWZmZXIAQnVm
+ZmVyQ29sdW1uSW5kZXhlcwBPdXRwdXRNYXAAc2V0X2lkAFZhbHVlAHNldF9pZF9Jc051bGwAc2V0
+X25hbWUAc2V0X25hbWVfSXNOdWxsAHNldF9kZXNjcmlwdGlvbgBzZXRfZGVzY3JpcHRpb25fSXNO
+dWxsAHNldF9hY3RpdmUAc2V0X2FjdGl2ZV9Jc051bGwAc2V0X29yZGVyAHNldF9vcmRlcl9Jc051
+bGwARGF0ZVRpbWUAc2V0X01vZFRpbWVzdGFtcABzZXRfTW9kVGltZXN0YW1wX0lzTnVsbABBZGRS
+b3cAU2V0RW5kT2ZSb3dzZXQARW5kT2ZSb3dzZXQAaWQAaWRfSXNOdWxsAG5hbWUAbmFtZV9Jc051
+bGwAZGVzY3JpcHRpb24AZGVzY3JpcHRpb25fSXNOdWxsAGFjdGl2ZQBhY3RpdmVfSXNOdWxsAG9y
+ZGVyAG9yZGVyX0lzTnVsbABNb2RUaW1lc3RhbXAATW9kVGltZXN0YW1wX0lzTnVsbABTY3JpcHRD
+b21wb25lbnQARmluaXNoT3V0cHV0cwBNYXJrT3V0cHV0c0ZpbmlzaGVkAFByaW1lT3V0cHV0AE91
+dHB1dHMAT3V0cHV0SURzAEJ1ZmZlcnMAQ3JlYXRlTmV3T3V0cHV0Um93cwBQYXJlbnRDb21wb25l
+bnQAQ29tcG9uZW50AE1vbmdvREIuRHJpdmVyAE1vbmdvU2VydmVyAG1vbmdvaW5zdGFuY2UATW9u
+Z29EYXRhYmFzZQBkYXRhYmFzZQBjb25uZWN0aW9uU3RyaW5nAE1vbmdvQ2xpZW50AG1vbmdvY2xp
+ZW50AGRiTmFtZQBQcmVFeGVjdXRlAFBvc3RFeGVjdXRlAFN5c3RlbS5SZXNvdXJjZXMAUmVzb3Vy
+Y2VNYW5hZ2VyAF9yZXNNZ3IAU3lzdGVtLkdsb2JhbGl6YXRpb24AQ3VsdHVyZUluZm8AX3Jlc0N1
+bHR1cmUAZ2V0X1Jlc291cmNlTWFuYWdlcgBnZXRfQ3VsdHVyZQBzZXRfQ3VsdHVyZQBDdWx0dXJl
+AFN5c3RlbS5Db25maWd1cmF0aW9uAEFwcGxpY2F0aW9uU2V0dGluZ3NCYXNlAG1fVmFsdWUAbV9T
+eW5jT2JqZWN0AGdldF9WYWx1ZQBTeXN0ZW0uQ29tcG9uZW50TW9kZWwARWRpdG9yQnJvd3NhYmxl
+QXR0cmlidXRlAEVkaXRvckJyb3dzYWJsZVN0YXRlAFN5c3RlbS5Db2RlRG9tLkNvbXBpbGVyAEdl
+bmVyYXRlZENvZGVBdHRyaWJ1dGUAU3lzdGVtLkRpYWdub3N0aWNzAERlYnVnZ2VySGlkZGVuQXR0
+cmlidXRlAE1pY3Jvc29mdC5WaXN1YWxCYXNpYy5Db21waWxlclNlcnZpY2VzAFN0YW5kYXJkTW9k
+dWxlQXR0cmlidXRlAEhpZGVNb2R1bGVOYW1lQXR0cmlidXRlAFN5c3RlbS5Db21wb25lbnRNb2Rl
+bC5EZXNpZ24ASGVscEtleXdvcmRBdHRyaWJ1dGUAU3lzdGVtLlJ1bnRpbWUuQ29tcGlsZXJTZXJ2
+aWNlcwBSdW50aW1lSGVscGVycwBHZXRPYmplY3RWYWx1ZQBSdW50aW1lVHlwZUhhbmRsZQBHZXRU
+eXBlRnJvbUhhbmRsZQBBY3RpdmF0b3IAQ3JlYXRlSW5zdGFuY2UATXlHcm91cENvbGxlY3Rpb25B
+dHRyaWJ1dGUAc2V0X1ZhbHVlAFN5c3RlbS5SdW50aW1lLkludGVyb3BTZXJ2aWNlcwBDb21WaXNp
+YmxlQXR0cmlidXRlAHNldF9JdGVtAFNldE51bGwASW52YWxpZE9wZXJhdGlvbkV4Y2VwdGlvbgBC
+b29sZWFuAEludDMyAENMU0NvbXBsaWFudEF0dHJpYnV0ZQBHZXRPdXRwdXRJRABHZXRDb2x1bW5J
+bmRleGVzAEdldFNlcnZlcgBHZXREYXRhYmFzZQBEaXNjb25uZWN0AE1vbmdvREIuQnNvbgBCc29u
+RG9jdW1lbnQAU3lzdGVtLkNvbGxlY3Rpb25zLkdlbmVyaWMASUVudW1lcmF0b3JgMQBNb25nb0Nv
+bGxlY3Rpb25gMQBHZXRDb2xsZWN0aW9uAE1vbmdvQ3Vyc29yYDEARmluZEFsbABHZXRFbnVtZXJh
+dG9yAGdldF9DdXJyZW50AEJzb25WYWx1ZQBnZXRfSXRlbQBvcF9JbXBsaWNpdABHZXRWYWx1ZQBU
+b0ludDMyAFRvQm9vbGVhbgBnZXRfQXNCc29uRG9jdW1lbnQAVG9Mb2NhbFRpbWUAU3lzdGVtLkNv
+bGxlY3Rpb25zAElFbnVtZXJhdG9yAE1vdmVOZXh0AElEaXNwb3NhYmxlAERpc3Bvc2UAU1NJU1Nj
+cmlwdENvbXBvbmVudEVudHJ5UG9pbnRBdHRyaWJ1dGUAU3lzdGVtLlJlZmxlY3Rpb24AQXNzZW1i
+bHkAZ2V0X0Fzc2VtYmx5AFN5c3RlbS5UaHJlYWRpbmcATW9uaXRvcgBFbnRlcgBFeGl0AERlYnVn
+Z2VyTm9uVXNlckNvZGVBdHRyaWJ1dGUAU0NfNTUyNmJmN2IyZjUyNGE5Mjk3OTZlODk2ZDllNmY1
+NTcuUmVzb3VyY2VzLnJlc291cmNlcwBDb21waWxhdGlvblJlbGF4YXRpb25zQXR0cmlidXRlAFJ1
+bnRpbWVDb21wYXRpYmlsaXR5QXR0cmlidXRlAFN5c3RlbS5SdW50aW1lLlZlcnNpb25pbmcAVGFy
+Z2V0RnJhbWV3b3JrQXR0cmlidXRlAEFzc2VtYmx5RmlsZVZlcnNpb25BdHRyaWJ1dGUAR3VpZEF0
+dHJpYnV0ZQBBc3NlbWJseVRyYWRlbWFya0F0dHJpYnV0ZQBBc3NlbWJseUNvcHlyaWdodEF0dHJp
+YnV0ZQBBc3NlbWJseVByb2R1Y3RBdHRyaWJ1dGUAQXNzZW1ibHlDb21wYW55QXR0cmlidXRlAEFz
+c2VtYmx5RGVzY3JpcHRpb25BdHRyaWJ1dGUAQXNzZW1ibHlUaXRsZUF0dHJpYnV0ZQBTQ181NTI2
+YmY3YjJmNTI0YTkyOTc5NmU4OTZkOWU2ZjU1Ny5kbGwAAAAAgJtJAHMATgB1AGwAbAAgAHAAcgBv
+AHAAZQByAHQAeQAgAGMAYQBuAG4AbwB0ACAAYgBlACAAcwBlAHQAIAB0AG8AIABGAGEAbABzAGUA
+LgAgAEEAcwBzAGkAZwBuACAAYQAgAHYAYQBsAHUAZQAgAHQAbwAgAHQAaABlACAAYwBvAGwAdQBt
+AG4AIABpAG4AcwB0AGUAYQBkAC4AABlvAHUAdABFAHEAdQBpAHAAbQBlAG4AdAAAJ20AbwBuAGcA
+bwBkAGIAOgAvAC8AbABvAGMAYQBsAGgAbwBzAHQAABFkAGkAcwBwAGEAdABjAGgAABdoAGkAZQBy
+AGEAcgBjAGgAaQBlAHMAAAdfAGkAZAAACW4AYQBtAGUAABdkAGUAcwBjAHIAaQBwAHQAaQBvAG4A
+AAM/AAALbwByAGQAZQByAAANYQBjAHQAaQB2AGUAAAl0AHIAdQBlAAAHbQBvAGQAAAVhAHQAADFN
+AHkALgBSAGUAcwBvAHUAcgBjAGUAcwAuAE0AeQBSAGUAcwBvAHUAcgBjAGUAcwAAtad/FgUYOkqw
+oGuThNc0FQAIt3pcVhk04IkIsD9ffxHVCjoDIAABAwAAAQQAABIMBwYVEhgBEgwEAAASCAcGFRIY
+ARIIBAAAEhEHBhUSGAESEQQAABIUBwYVEhgBEhQECAASDAQIABIIBAgAEhEECAASFAQgAQIcAyAA
+CAQgABIVAyAADgIeAAcQAQEeAB4ABzABAQEQHgACEwAEIAATAAcGFRIZARMABCgAEwAIiYRdzYCA
+zJEJIAMBEiEdCBIlBCABAQ4EIAEBAgQgAQEIBSABAREpAyAAAgMoAA4DKAACAygACAQoABEpAwYS
+JAMGEigDBhIcCyAEAQgdCB0SIRIlAwYSLQUgAQESLQj2hnMc+5zBAwMGEjEDBhI1AgYOAwYSOQMG
+Ej0DBhJBBAAAEj0EAAASQQUAAQESQQQIABI9BAgAEkEDBhI0AgYcBAAAEjQECAASNAUgAQERTQgB
+AAEAAAAAAAUgAgEODhgBAApNeVRlbXBsYXRlCDEwLjAuMC4wAAAEAQAAAAYVEhgBEgwGFRIYARII
+BhUSGAESEQYVEhgBEhQEBwESDAQHARIIBAcBEhEEBwESFAwBAAdNeS5Vc2VyAAATAQAOTXkuV2Vi
+U2VydmljZXMAABMBAA5NeS5BcHBsaWNhdGlvbgAAEAEAC015LkNvbXB1dGVyAAAEAAEcHAMHAQID
+BwEIBgABEhURaQQHARIVAwcBDgUQAQAeAAQKAR4ABAcBHgAHIAQBDg4ODmEBADRTeXN0ZW0uV2Vi
+LlNlcnZpY2VzLlByb3RvY29scy5Tb2FwSHR0cENsaWVudFByb3RvY29sEkNyZWF0ZV9fSW5zdGFu
+Y2VfXxNEaXNwb3NlX19JbnN0YW5jZV9fAAAABhUSGAETAAYVEhkBEwAECgETAAUgAQETAAgHAxMA
+EwATAAUBAAAAAAUgAgEIHAYAAggSJQ4FIAEdCAgEBwIICAQgABIxBSABEjUOCyABFRKAkQESgIkO
+CBUSgJEBEoCJCSAAFRKAlQETAAgVEoCVARKAiQkgABUSgJkBEwAIFRKAjQESgIkGIAESgJ0OBgAB
+EoCdDgkgAhKAnQ4SgJ0GAAESgJ0IBSAAEoCJBSAAEYChDQcCEoCJFRKAjQESgIkFIAASgLEHIAIB
+DhKAsQYHAhI9Ej0EBwESQQgBAAIAAAAAAAQAAQEcBAcBEjQIAQAIAAAAAAAeAQABAFQCFldyYXBO
+b25FeGNlcHRpb25UaHJvd3MBRwEAGi5ORVRGcmFtZXdvcmssVmVyc2lvbj12NC4wAQBUDhRGcmFt
+ZXdvcmtEaXNwbGF5TmFtZRAuTkVUIEZyYW1ld29yayA0DAEABzEuMC4wLjAAACkBACRmNTBjMDhj
+OC1kMDQ0LTRjM2ItOTNiNi0yMGI3ZmIzM2RjYTYAAAUBAAEAABgBABNDb3B5cmlnaHQgQCBNUyAy
+MDEzAAAoAQAjU0NfNTUyNmJmN2IyZjUyNGE5Mjk3OTZlODk2ZDllNmY1NTcAAAcBAAJNUwAAAAB0
+RgAAAAAAAAAAAACORgAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgEYAAAAAAAAAAAAAAABfQ29y
+RGxsTWFpbgBtc2NvcmVlLmRsbAAAAAAA/yUAIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABABAAAAAY
+AACAAAAAAAAAAAAAAAAAAAABAAEAAAAwAACAAAAAAAAAAAAAAAAAAAABAAAAAABIAAAAWGAAAKwD
+AAAAAAAAAAAAAKwDNAAAAFYAUwBfAFYARQBSAFMASQBPAE4AXwBJAE4ARgBPAAAAAAC9BO/+AAAB
+AAAAAQAAAAAAAAABAAAAAAA/AAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAARAAAAAEAVgBhAHIA
+RgBpAGwAZQBJAG4AZgBvAAAAAAAkAAQAAABUAHIAYQBuAHMAbABhAHQAaQBvAG4AAAAAAAAAsAQM
+AwAAAQBTAHQAcgBpAG4AZwBGAGkAbABlAEkAbgBmAG8AAADoAgAAAQAwADAAMAAwADAANABiADAA
+AAAoAAMAAQBDAG8AbQBwAGEAbgB5AE4AYQBtAGUAAAAAAE0AUwAAAAAAcAAkAAEARgBpAGwAZQBE
+AGUAcwBjAHIAaQBwAHQAaQBvAG4AAAAAAFMAQwBfADUANQAyADYAYgBmADcAYgAyAGYANQAyADQA
+YQA5ADIAOQA3ADkANgBlADgAOQA2AGQAOQBlADYAZgA1ADUANwAAADAACAABAEYAaQBsAGUAVgBl
+AHIAcwBpAG8AbgAAAAAAMQAuADAALgAwAC4AMAAAAHAAKAABAEkAbgB0AGUAcgBuAGEAbABOAGEA
+bQBlAAAAUwBDAF8ANQA1ADIANgBiAGYANwBiADIAZgA1ADIANABhADkAMgA5ADcAOQA2AGUAOAA5
+ADYAZAA5AGUANgBmADUANQA3AC4AZABsAGwAAABMABQAAQBMAGUAZwBhAGwAQwBvAHAAeQByAGkA
+ZwBoAHQAAABDAG8AcAB5AHIAaQBnAGgAdAAgAEAAIABNAFMAIAAyADAAMQAzAAAAeAAoAAEATwBy
+AGkAZwBpAG4AYQBsAEYAaQBsAGUAbgBhAG0AZQAAAFMAQwBfADUANQAyADYAYgBmADcAYgAyAGYA
+NQAyADQAYQA5ADIAOQA3ADkANgBlADgAOQA2AGQAOQBlADYAZgA1ADUANwAuAGQAbABsAAAAaAAk
+AAEAUAByAG8AZAB1AGMAdABOAGEAbQBlAAAAAABTAEMAXwA1ADUAMgA2AGIAZgA3AGIAMgBmADUA
+MgA0AGEAOQAyADkANwA5ADYAZQA4ADkANgBkADkAZQA2AGYANQA1ADcAAAA0AAgAAQBQAHIAbwBk
+AHUAYwB0AFYAZQByAHMAaQBvAG4AAAAxAC4AMAAuADAALgAwAAAAOAAIAAEAQQBzAHMAZQBtAGIA
+bAB5ACAAVgBlAHIAcwBpAG8AbgAAADEALgAwAC4AMAAuADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAwAAACgNgAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
+                          </arrayElements>
+                        </property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the name of the Microsoft Visual Studio Tools for Applications project. Project names must be unique within a package."
+                          name="VSTAProjectName"
+                          typeConverter="NOTBROWSABLE">SC_5526bf7b2f524a929796e896d9e6f557</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the programming language used by the script."
+                          name="ScriptLanguage"
+                          typeConverter="Microsoft.SqlServer.VSTAHosting.ScriptingLanguages, Microsoft.SqlServer.VSTAScriptingLib, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">VisualBasic</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies a comma-separated list of read-only variables."
+                          name="ReadOnlyVariables"
+                          UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIVariablePickerDlg, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies a comma-separated list of read/write variables."
+                          name="ReadWriteVariables"
+                          UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIWriteableVariablePickerDlg, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                        <property
+                          dataType="System.String"
+                          description="List of breakpoints present on the script."
+                          isArray="true"
+                          name="BreakpointCollection"
+                          typeConverter="NOTBROWSABLE">
+                          <arrayElements
+                            arrayElementCount="0" />
+                        </property>
+                        <property
+                          dataType="System.String"
+                          description="Checksum to match component metedata against compiled codes."
+                          name="MetadataChecksum"
+                          typeConverter="NOTBROWSABLE">f142b3eccbf2faba141424491b44f7b7</property>
+                        <property
+                          dataType="System.String"
+                          name="UserComponentTypeName">Microsoft.SqlServer.Dts.Pipeline.ScriptComponentHost, Microsoft.SqlServer.TxScript, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91</property>
+                      </properties>
+                      <outputs>
+                        <output
+                          refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment]"
+                          hasSideEffects="true"
+                          name="outEquipment">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[_id]"
+                              codePage="1252"
+                              dataType="str"
+                              length="50"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[_id]"
+                              name="_id" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[name]"
+                              codePage="1252"
+                              dataType="str"
+                              length="25"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[name]"
+                              name="name" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[description]"
+                              codePage="1252"
+                              dataType="str"
+                              length="50"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[description]"
+                              name="description" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[active]"
+                              dataType="bool"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[active]"
+                              name="active" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[order]"
+                              dataType="i4"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[order]"
+                              name="order" />
+                            <outputColumn
+                              refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[ModTimestamp]"
+                              dataType="date"
+                              lineageId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment].Columns[ModTimestamp]"
+                              name="ModTimestamp" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                  </components>
+                  <paths>
+                    <path
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[Data Conversion Output]"
+                      endId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Inputs[Lookup Input]"
+                      name="Data Conversion Output"
+                      startId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Outputs[Data Conversion Output]" />
+                    <path
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[Derived Column Output]"
+                      endId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name.Inputs[Data Conversion Input]"
+                      name="Derived Column Output"
+                      startId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Outputs[Derived Column Output]" />
+                    <path
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[Lookup Match Output1]"
+                      endId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates.Inputs[Conditional Split Input]"
+                      name="Lookup Match Output"
+                      startId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Outputs[Lookup Match Output]" />
+                    <path
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[Lookup Match Output]"
+                      endId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies.Inputs[OLE DB Destination Input]"
+                      name="Lookup Match Output"
+                      startId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category.Outputs[Lookup Match Output]" />
+                    <path
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[Lookup No Match Output]"
+                      endId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 2]"
+                      name="Lookup No Match Output"
+                      startId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Outputs[Lookup No Match Output]" />
+                    <path
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[outEquipment]"
+                      endId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies.Inputs[Lookup Input]"
+                      name="outEquipment"
+                      startId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies.Outputs[outEquipment]" />
+                    <path
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[Union All Output 1]"
+                      endId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch.Inputs[Derived Column Input]"
+                      name="Union All Output 1"
+                      startId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Outputs[Union All Output 1]" />
+                    <path
+                      refId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[Updates]"
+                      endId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas.Inputs[Union All Input 1]"
+                      name="Updates"
+                      startId="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates.Outputs[Updates]" />
+                  </paths>
+                </pipeline>
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\Land Flow Daily\Land Hierarchies\Log Finish Step"
+              DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:Description="Execute SQL Task"
+              DTS:DTSID="{7AFDEA60-9B74-485E-97DB-D0450B6F3B9E}"
+              DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Log Finish Step"
+              DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+              DTS:ThreadHint="1">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <SQLTask:SqlTaskData
+                  SQLTask:Connection="{D8E3983E-194A-45FA-874F-A39AD080929A}"
+                  SQLTask:SqlStatementSource="EXEC lnd.createBatchStep ?, 'Landing', 'Hierarchies', ?, 1" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+                  <SQLTask:ParameterBinding
+                    SQLTask:ParameterName="0"
+                    SQLTask:DtsVariableName="User::curBatchKey"
+                    SQLTask:ParameterDirection="Input"
+                    SQLTask:DataType="20"
+                    SQLTask:ParameterSize="-1" />
+                  <SQLTask:ParameterBinding
+                    SQLTask:ParameterName="1"
+                    SQLTask:DtsVariableName="User::curBatchStepKey"
+                    SQLTask:ParameterDirection="Input"
+                    SQLTask:DataType="20"
+                    SQLTask:ParameterSize="-1" />
+                </SQLTask:SqlTaskData>
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\Land Flow Daily\Land Hierarchies\Log Start Step"
+              DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:Description="Execute SQL Task"
+              DTS:DTSID="{FC289CB6-17FE-40A9-BED8-1363A0ABC634}"
+              DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Log Start Step"
+              DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+              DTS:ThreadHint="1">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <SQLTask:SqlTaskData
+                  SQLTask:Connection="{D8E3983E-194A-45FA-874F-A39AD080929A}"
+                  SQLTask:SqlStatementSource="EXEC lnd.createBatchStep ?, 'Landing', 'Hierarchies', -1, 0"
+                  SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+                  <SQLTask:ResultBinding
+                    SQLTask:ResultName="0"
+                    SQLTask:DtsVariableName="User::curBatchStepKey" />
+                  <SQLTask:ParameterBinding
+                    SQLTask:ParameterName="0"
+                    SQLTask:DtsVariableName="User::curBatchKey"
+                    SQLTask:ParameterDirection="Input"
+                    SQLTask:DataType="20"
+                    SQLTask:ParameterSize="-1" />
+                </SQLTask:SqlTaskData>
+              </DTS:ObjectData>
+            </DTS:Executable>
+          </DTS:Executables>
+          <DTS:PrecedenceConstraints>
+            <DTS:PrecedenceConstraint
+              DTS:refId="Package\Land Flow Daily\Land Hierarchies.PrecedenceConstraints[Constraint]"
+              DTS:CreationName=""
+              DTS:DTSID="{748BFBA5-5E67-4147-AAF4-58D4DDD06D42}"
+              DTS:From="Package\Land Flow Daily\Land Hierarchies\Log Start Step"
+              DTS:LogicalAnd="True"
+              DTS:ObjectName="Constraint"
+              DTS:To="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies" />
+            <DTS:PrecedenceConstraint
+              DTS:refId="Package\Land Flow Daily\Land Hierarchies.PrecedenceConstraints[Constraint 1]"
+              DTS:CreationName=""
+              DTS:DTSID="{CD33150C-E944-4BBF-84E8-9554D1B206A7}"
+              DTS:From="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies"
+              DTS:LogicalAnd="True"
+              DTS:ObjectName="Constraint 1"
+              DTS:To="Package\Land Flow Daily\Land Hierarchies\Log Finish Step" />
+          </DTS:PrecedenceConstraints>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Land Flow Daily.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{BA48FAA2-BEDD-4111-9565-41073A21EF61}"
+          DTS:From="Package\Land Flow Daily\Create New Batch"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Land Flow Daily\Land Hierarchies" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="sql11">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="155,42"
+          Id="Package\Land Flow Daily\Complete Batch\Complete Batch"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="46"
+          IsExpanded="False"
+          PanelSize="166,102"
+          Size="166,46"
+          Id="Package\Land Flow Daily\Complete Batch"
+          TopLeft="249.313693066043,454.590087510252" />
+        <NodeLayout
+          Size="141,42"
+          Id="Package\Land Flow Daily\Create New Batch\Create Batch"
+          TopLeft="18.5,5.5" />
+        <NodeLayout
+          Size="167,42"
+          Id="Package\Land Flow Daily\Create New Batch\Set Batch Variable"
+          TopLeft="5.50000000000001,107.5" />
+        <EdgeLayout
+          Id="Package\Land Flow Daily\Create New Batch.PrecedenceConstraints[Constraint]"
+          TopLeft="89,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="False"
+          PanelSize="178,204"
+          Size="178,43"
+          Id="Package\Land Flow Daily\Create New Batch"
+          TopLeft="230.733558594569,86.9189324982348" />
+        <NodeLayout
+          Size="159,42"
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies"
+          TopLeft="5.50000000000003,107.5" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\Land Flow Daily\Land Hierarchies\Log Finish Step"
+          TopLeft="17.2899670687545,196.645596552198" />
+        <NodeLayout
+          Size="148,42"
+          Id="Package\Land Flow Daily\Land Hierarchies\Log Start Step"
+          TopLeft="24.5,5.5" />
+        <EdgeLayout
+          Id="Package\Land Flow Daily\Land Hierarchies.PrecedenceConstraints[Constraint]"
+          TopLeft="98.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-13.5,60"
+              Start="0,0"
+              End="-13.5,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="-4,30" />
+                  <mssgle:LineSegment
+                    End="-9.49999999999997,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-9.49999999999997,30"
+                    Point2="-13.5,30"
+                    Point3="-13.5,34" />
+                  <mssgle:LineSegment
+                    End="-13.5,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Land Flow Daily\Land Hierarchies.PrecedenceConstraints[Constraint 1]"
+          TopLeft="85,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="8.78996706875452,47.1455965521975"
+              Start="0,0"
+              End="8.78996706875452,39.6455965521975">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.5727982760988" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19.5727982760988"
+                    Point2="0,23.5727982760988"
+                    Point3="4,23.5727982760988" />
+                  <mssgle:LineSegment
+                    End="4.78996706875452,23.5727982760988" />
+                  <mssgle:CubicBezierSegment
+                    Point1="4.78996706875452,23.5727982760988"
+                    Point2="8.78996706875452,23.5727982760988"
+                    Point3="8.78996706875452,27.5727982760988" />
+                  <mssgle:LineSegment
+                    End="8.78996706875452,39.6455965521975" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="70"
+          IsExpanded="False"
+          PanelSize="197,306"
+          Size="181,70"
+          Id="Package\Land Flow Daily\Land Hierarchies"
+          TopLeft="229.976416995994,244.064612272879" />
+        <EdgeLayout
+          Id="Package\Land Flow Daily.PrecedenceConstraints[Constraint]"
+          TopLeft="320.104987795281,129.918932498235">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,114.145679774644"
+              Start="0,0"
+              End="0,106.645679774644">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,106.645679774644" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="1353,1181"
+          Size="1353,1224"
+          Id="Package\Land Flow Daily"
+          TopLeft="815.327067982411,41.6971863420549" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="155,42"
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Combine Deltas"
+          TopLeft="307.557732270156,529.741620840597" />
+        <NodeLayout
+          Size="187,42"
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Type Category"
+          TopLeft="327.199555594426,775.414559686202" />
+        <NodeLayout
+          Size="159,42"
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Identify Updates"
+          TopLeft="417.580882060614,458.97136477924" />
+        <NodeLayout
+          Size="159,42"
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies"
+          TopLeft="351.020937739567,895.494950759377" />
+        <NodeLayout
+          Size="205,42"
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies"
+          TopLeft="326.29378958928,370.724940256464" />
+        <NodeLayout
+          Size="195,42"
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Read Mongo Hierarchies"
+          TopLeft="303.221394556479,255.583083995852" />
+        <NodeLayout
+          Size="141,42"
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Assign Batch"
+          TopLeft="341.844577315287,613.424330484542" />
+        <NodeLayout
+          Size="174,42"
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Convert Type Name"
+          TopLeft="328.64542034127,686.949223016932" />
+        <EdgeLayout
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[Updates]"
+          TopLeft="497.080882060614,500.97136477924">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-87.523149790458,28.770256061357"
+              Start="0,0"
+              End="-87.523149790458,21.270256061357">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13.0857842509974" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.0857842509974"
+                    Point2="0,17.0857842509974"
+                    Point3="-4,17.0857842509974" />
+                  <mssgle:LineSegment
+                    End="-83.523149790458,17.0857842509974" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-83.523149790458,17.0857842509974"
+                    Point2="-87.523149790458,17.0857842509974"
+                    Point3="-87.523149790458,21.0857842509974" />
+                  <mssgle:LineSegment
+                    End="-87.523149790458,21.270256061357" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-61.308098332729,22.0857842509974,35.093046875,9.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[Union All Output 1]"
+          TopLeft="385.057732270156,571.741620840597">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="27.286845045131,41.682709643945"
+              Start="0,0"
+              End="27.286845045131,34.182709643945">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,16.8413548219725" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,16.8413548219725"
+                    Point2="0,20.8413548219725"
+                    Point3="4,20.8413548219725" />
+                  <mssgle:LineSegment
+                    End="23.286845045131,20.8413548219725" />
+                  <mssgle:CubicBezierSegment
+                    Point1="23.286845045131,20.8413548219725"
+                    Point2="27.286845045131,20.8413548219725"
+                    Point3="27.286845045131,24.8413548219725" />
+                  <mssgle:LineSegment
+                    End="27.286845045131,34.182709643945" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[outEquipment]"
+          TopLeft="400.721394556479,297.583083995852">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="28.072395032801,73.141856260612"
+              Start="0,0"
+              End="28.072395032801,65.641856260612">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32.570928130306" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,32.570928130306"
+                    Point2="0,36.570928130306"
+                    Point3="4,36.570928130306" />
+                  <mssgle:LineSegment
+                    End="24.072395032801,36.570928130306" />
+                  <mssgle:CubicBezierSegment
+                    Point1="24.072395032801,36.570928130306"
+                    Point2="28.072395032801,36.570928130306"
+                    Point3="28.072395032801,40.570928130306" />
+                  <mssgle:LineSegment
+                    End="28.072395032801,65.641856260612" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[Lookup No Match Output]"
+          TopLeft="395.960456255947,412.724940256464">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-35.4027239857906,117.016680584133"
+              Start="0,0"
+              End="-35.4027239857906,109.516680584133">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,54.328286929112" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,54.328286929112"
+                    Point2="0,58.328286929112"
+                    Point3="-4,58.328286929112" />
+                  <mssgle:LineSegment
+                    End="-31.4027239857906,58.328286929112" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-31.4027239857906,58.328286929112"
+                    Point2="-35.4027239857906,58.328286929112"
+                    Point3="-35.4027239857906,62.328286929112" />
+                  <mssgle:LineSegment
+                    End="-35.4027239857906,109.516680584133" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-72.5077487116453,63.328286929112,109.6127734375,9.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[Lookup Match Output1]"
+          TopLeft="461.627122922613,412.724940256464">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="35.4537591380007,46.246424522776"
+              Start="0,0"
+              End="35.4537591380007,38.746424522776">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14.7134612299326" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14.7134612299326"
+                    Point2="0,18.7134612299326"
+                    Point3="4,18.7134612299326" />
+                  <mssgle:LineSegment
+                    End="31.4537591380007,18.7134612299326" />
+                  <mssgle:CubicBezierSegment
+                    Point1="31.4537591380007,18.7134612299326"
+                    Point2="35.4537591380007,18.7134612299326"
+                    Point3="35.4537591380007,22.7134612299326" />
+                  <mssgle:LineSegment
+                    End="35.4537591380007,38.746424522776" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-29.4645071497497,23.7134612299326,94.3827734375,9.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[Lookup Match Output]"
+          TopLeft="420.699555594426,817.414559686202">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="9.821382145141,78.0803910731751"
+              Start="0,0"
+              End="9.821382145141,70.5803910731751">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35.0401955365875" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,35.0401955365875"
+                    Point2="0,39.0401955365875"
+                    Point3="4,39.0401955365875" />
+                  <mssgle:LineSegment
+                    End="5.821382145141,39.0401955365875" />
+                  <mssgle:CubicBezierSegment
+                    Point1="5.821382145141,39.0401955365875"
+                    Point2="9.821382145141,39.0401955365875"
+                    Point3="9.821382145141,43.0401955365875" />
+                  <mssgle:LineSegment
+                    End="9.821382145141,70.5803910731751" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-42.2806956461795,44.0401955365875,94.3827734375,9.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[Derived Column Output]"
+          TopLeft="413.994998828278,655.424330484542">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,31.52489253239"
+              Start="0,0"
+              End="0,24.02489253239">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,24.02489253239" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies.Paths[Data Conversion Output]"
+          TopLeft="418.172487967848,728.949223016932">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,46.46533666927"
+              Start="0,0"
+              End="0,38.96533666927">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,38.96533666927" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Land Hierarchies">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Land Flow Daily\Land Hierarchies\Land Hierarchies\Lookup Target Hierarchies">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[lnd].[hierarchies]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

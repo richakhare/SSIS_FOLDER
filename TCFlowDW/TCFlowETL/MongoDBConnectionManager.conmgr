@@ -1,0 +1,28 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="MongoDBConnectionManager"
+  DTS:DTSID="{3ABC1F14-FF1C-44DC-81C4-B22896AC7649}"
+  DTS:CreationName="MongoDB">
+  <DTS:ObjectData>
+    <InnerObject>
+      <DatabaseName
+        Type="8"
+        Value="" />
+      <Password
+        Type="8"
+        Value="" />
+      <ServerName
+        Type="8"
+        Value="localhost" />
+      <SlaveOk
+        Type="11"
+        Value="0" />
+      <Ssl
+        Type="11"
+        Value="0" />
+      <UserName
+        Type="8"
+        Value="" />
+    </InnerObject>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

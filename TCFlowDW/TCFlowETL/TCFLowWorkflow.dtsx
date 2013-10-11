@@ -1,0 +1,517 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="9/20/2013 4:41:50 AM"
+  DTS:CreationName="SSIS.Package.3"
+  DTS:CreatorComputerName="CHP-S0-DWDB-VM0"
+  DTS:CreatorName="CHP-S0-DWDB-VM0\ryan"
+  DTS:DTSID="{48D59E46-AD53-4EAD-9615-AD4F6511C7EC}"
+  DTS:EnableConfig="True"
+  DTS:ExecutableType="SSIS.Package.3"
+  DTS:LastModifiedProductVersion="11.0.3350.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="TCFLowWorkflow"
+  DTS:PackageType="5"
+  DTS:VersionBuild="10"
+  DTS:VersionGUID="{52B330BA-AE31-4238-BC67-744BD4799813}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">6</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[FLOW_DW_DB]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{C9DDCA3D-15D4-4BA7-AA72-343CD868A963}"
+      DTS:ObjectName="FLOW_DW_DB">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=localhost;User ID=;Initial Catalog=FLOW_DW_DB;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhMcDYIMAmk2eeV3ZKM7iKQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAcSHLDCQWdoR7R575f55+quTuAEzWIPCJ+7GTsl8zOdAAAAAAOgAAAAAIAACAAAABxuwvrANfB75j8Zi1up/XqePj2q2dYvRowfhukTNNcchAAAACT2UaaeXGQhqLCvqiHkJMRQAAAANRP9knq+CfCOTUSSbK9ieNK29KxpQdw4rmPvz+zgsktmwExo1KFXnM7g5lrQlx4jpnpbn4EvQ0zsY1FEAWhCW8</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Configurations>
+    <DTS:Configuration
+      DTS:ConfigurationString="C:\Apps\TCFlowDW\TCFlowETL\DestinationSQL.dtsConfig"
+      DTS:ConfigurationType="1"
+      DTS:CreationName=""
+      DTS:DTSID="{4C3226A9-5D57-402B-878B-48220B7967A4}"
+      DTS:ObjectName="DWDBConfig" />
+  </DTS:Configurations>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{86334047-0077-49CB-9315-B1D71DF64A5F}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="curBatchKey">
+      <DTS:VariableValue
+        DTS:DataType="3">1</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Daily Refresh Workflow"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{5D1ACB0C-B3C2-4765-A185-4DE331C7A603}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Daily Refresh Workflow">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Daily Refresh Workflow\Complete Batch"
+          DTS:CreationName="STOCK:SEQUENCE"
+          DTS:Description="Sequence Container"
+          DTS:DTSID="{098946b0-9a5a-4860-a1cc-0d5e8e7996bb}"
+          DTS:ExecutableType="STOCK:SEQUENCE"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Complete Batch">
+          <DTS:Variables />
+          <DTS:Executables>
+            <DTS:Executable
+              DTS:refId="Package\Daily Refresh Workflow\Complete Batch\Complete Batch"
+              DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:Description="Execute SQL Task"
+              DTS:DTSID="{6f89400c-c5aa-49b9-8cbd-6c521c519803}"
+              DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Complete Batch"
+              DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+              DTS:ThreadHint="0">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <SQLTask:SqlTaskData
+                  SQLTask:Connection="{C9DDCA3D-15D4-4BA7-AA72-343CD868A963}"
+                  SQLTask:SqlStatementSource="Update lnd.Batches Set ExecutionEndDate = GetDate() Where BatchKey = ?" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+                  <SQLTask:ParameterBinding
+                    SQLTask:ParameterName="0"
+                    SQLTask:DtsVariableName="User::curBatchKey"
+                    SQLTask:ParameterDirection="Input"
+                    SQLTask:DataType="20"
+                    SQLTask:ParameterSize="-1" />
+                </SQLTask:SqlTaskData>
+              </DTS:ObjectData>
+            </DTS:Executable>
+          </DTS:Executables>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Daily Refresh Workflow\Create New Batch"
+          DTS:CreationName="STOCK:SEQUENCE"
+          DTS:Description="Sequence Container"
+          DTS:DTSID="{95da7eb2-4e06-46d0-93fc-763443ae6005}"
+          DTS:ExecutableType="STOCK:SEQUENCE"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Create New Batch">
+          <DTS:Variables />
+          <DTS:Executables>
+            <DTS:Executable
+              DTS:refId="Package\Daily Refresh Workflow\Create New Batch\Create Batch"
+              DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:Description="Execute SQL Task"
+              DTS:DTSID="{aa8e4816-694a-4b57-9210-669101debefc}"
+              DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Create Batch"
+              DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+              DTS:ThreadHint="0">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <SQLTask:SqlTaskData
+                  SQLTask:Connection="{C9DDCA3D-15D4-4BA7-AA72-343CD868A963}"
+                  SQLTask:BypassPrepare="False"
+                  SQLTask:SqlStatementSource="Insert Into lnd.Batches &#xA;Select ISNULL(Max(BatchKey), 1) + 1 as BatchKey, 'Daily' BatchType, Current_Timestamp ExecutionStartDate, null as ExecutionEndDate From lnd.Batches" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\Daily Refresh Workflow\Create New Batch\Set Batch Variable"
+              DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:Description="Execute SQL Task"
+              DTS:DTSID="{25bbc82a-1522-4c34-bcb1-51e1cbb4fd40}"
+              DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Set Batch Variable"
+              DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+              DTS:ThreadHint="0">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <SQLTask:SqlTaskData
+                  SQLTask:Connection="{C9DDCA3D-15D4-4BA7-AA72-343CD868A963}"
+                  SQLTask:BypassPrepare="False"
+                  SQLTask:SqlStatementSource="Select Max(BatchKey) as curBatchKey from lnd.Batches"
+                  SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+                  <SQLTask:ResultBinding
+                    SQLTask:ResultName="0"
+                    SQLTask:DtsVariableName="User::curBatchKey" />
+                </SQLTask:SqlTaskData>
+              </DTS:ObjectData>
+            </DTS:Executable>
+          </DTS:Executables>
+          <DTS:PrecedenceConstraints>
+            <DTS:PrecedenceConstraint
+              DTS:refId="Package\Daily Refresh Workflow\Create New Batch.PrecedenceConstraints[Constraint]"
+              DTS:CreationName=""
+              DTS:DTSID="{4d453caf-b428-4db8-adbb-888bedb246fd}"
+              DTS:From="Package\Daily Refresh Workflow\Create New Batch\Create Batch"
+              DTS:LogicalAnd="True"
+              DTS:ObjectName="Constraint"
+              DTS:To="Package\Daily Refresh Workflow\Create New Batch\Set Batch Variable" />
+          </DTS:PrecedenceConstraints>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Daily Refresh Workflow\Execute DM Daily"
+          DTS:CreationName="SSIS.ExecutePackageTask.3"
+          DTS:Description="Execute Package Task"
+          DTS:DTSID="{03CD7A26-8898-4E6F-8556-30B635CECBF2}"
+          DTS:ExecutableType="SSIS.ExecutePackageTask.3"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Execute DM Daily"
+          DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <ExecutePackageTask>
+              <UseProjectReference>True</UseProjectReference>
+              <PackageName>DM_Daily.dtsx</PackageName>
+              <PackagePassword
+                Sensitive="1"
+                Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhMcDYIMAmk2eeV3ZKM7iKQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAo4BXdCvY1IGKFhIEQTx/1r9JB7+YgXwS1dXYPw1STwwAAAAAOgAAAAAIAACAAAABFUOt83vkHuacoFZ7FZWoHRoNMpZR02YUSNTmW1rAFFCAAAACtsAOg0wj62DbKE7qbxQ8MmkRPo6G93SgYgarZlJVGcEAAAABBqgvdBXWdEerokri+ZsHGSIA2SPb7la5sEz1Xu7R+eFlGxoXAbhEOdNEv2iwaWGhBS477t57bhg7pGSeMvDOg</PackagePassword>
+            </ExecutePackageTask>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Daily Refresh Workflow\Execute Landing Daily"
+          DTS:CreationName="SSIS.ExecutePackageTask.3"
+          DTS:Description="Execute Package Task"
+          DTS:DTSID="{94E9F520-3449-4B3B-9289-98C157920478}"
+          DTS:ExecutableType="SSIS.ExecutePackageTask.3"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Execute Landing Daily"
+          DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <ExecutePackageTask>
+              <UseProjectReference>True</UseProjectReference>
+              <PackageName>Landing_Daily.dtsx</PackageName>
+              <PackagePassword
+                Sensitive="1"
+                Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhMcDYIMAmk2eeV3ZKM7iKQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAADiskHJG9woM2iiFTt66lFaW6bsG2gVSoH6LltysndoIwAAAAAOgAAAAAIAACAAAAAZkHcY99qsgKxJKReTaIAcgsH+A/5aFP/L1KvREQsgZiAAAACK6OcleK5lTi5iJ7MaKtnmIepDjUX98gLrjiVEW8hHD0AAAAD97/IvC8/f66DeltTLomhILAwIfByX66AQIsdqR7mFjKH4WeK1C1rRDrn/Co4Ja0e63Ov39+DptdAkiaPFLYDm</PackagePassword>
+            </ExecutePackageTask>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Daily Refresh Workflow\Execute Source Writeback"
+          DTS:CreationName="SSIS.ExecutePackageTask.3"
+          DTS:Description="Execute Package Task"
+          DTS:DTSID="{FC63EFA0-53A9-45DA-B35D-731703FD0A5C}"
+          DTS:ExecutableType="SSIS.ExecutePackageTask.3"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Execute Source Writeback"
+          DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <ExecutePackageTask>
+              <UseProjectReference>True</UseProjectReference>
+              <PackageName>TCFlow_Daily.dtsx</PackageName>
+              <PackagePassword
+                Sensitive="1"
+                Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhMcDYIMAmk2eeV3ZKM7iKQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAADnyqtNaarCWiGNWF1oIySPTNm4YxHXrSoFLrB1R/9pWQAAAAAOgAAAAAIAACAAAABcVPeImtdAToO4lstbdIKQJa22p5iYIleoHQUlbPNBKyAAAADeXQWhrZJV6TCBIs7BUguTkywKdJnWTEcQJaDJL/9Sg0AAAADTqCx8B2RCq7s90clopnw5qnKAq/sqtYDlgGDdkXQe50+765DlW4r9Wf/+wG5shEIKleH0P64Jhe3Bp8wE9n0w</PackagePassword>
+            </ExecutePackageTask>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Daily Refresh Workflow\Execute Staging Daily"
+          DTS:CreationName="SSIS.ExecutePackageTask.3"
+          DTS:Description="Execute Package Task"
+          DTS:DTSID="{2AE67467-0C1D-4BAA-A867-BA491B7B52F1}"
+          DTS:ExecutableType="SSIS.ExecutePackageTask.3"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Execute Staging Daily"
+          DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <ExecutePackageTask>
+              <UseProjectReference>True</UseProjectReference>
+              <PackageName>Staging_Daily.dtsx</PackageName>
+              <PackagePassword
+                Sensitive="1"
+                Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhMcDYIMAmk2eeV3ZKM7iKQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAC9tW63e+XVfEi45otjCkWo1uBxTnQMAPpyAppPYRTVkAAAAAAOgAAAAAIAACAAAACUJbvbyNc+9Md2/qsOh+7e4IsKOr4MsZp8AWxHcqGpySAAAAAlaEPLIIyZBK9To5RxoQ54HtzH+hj3Mcs3OYNbnVgQokAAAADAAYWEQFFU4ZUt5Iav2xhYxZRo8GipNVtUS21TvV/AGP+Dn/hxGaIFpBxgBNvOvAtud+wVJRxRHGtL7PX38+G9</PackagePassword>
+            </ExecutePackageTask>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Daily Refresh Workflow.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{E8862F87-8B84-4AD1-8BF8-D22443F4F667}"
+          DTS:From="Package\Daily Refresh Workflow\Execute Source Writeback"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Daily Refresh Workflow\Complete Batch" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Daily Refresh Workflow.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{B6A23C1A-452E-4CAA-A49F-9EB41C4D824B}"
+          DTS:From="Package\Daily Refresh Workflow\Create New Batch"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\Daily Refresh Workflow\Execute Landing Daily" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Daily Refresh Workflow.PrecedenceConstraints[DM Completed]"
+          DTS:CreationName=""
+          DTS:DTSID="{C2263FC4-2E40-4B33-915D-41AFAA88DD02}"
+          DTS:From="Package\Daily Refresh Workflow\Execute DM Daily"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="DM Completed"
+          DTS:To="Package\Daily Refresh Workflow\Execute Source Writeback" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Daily Refresh Workflow.PrecedenceConstraints[Landing Completed]"
+          DTS:CreationName=""
+          DTS:DTSID="{14E3BAA0-E853-4548-890C-8851EC0F9A3D}"
+          DTS:From="Package\Daily Refresh Workflow\Execute Landing Daily"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Landing Completed"
+          DTS:To="Package\Daily Refresh Workflow\Execute Staging Daily" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Daily Refresh Workflow.PrecedenceConstraints[Stage Completed]"
+          DTS:CreationName=""
+          DTS:DTSID="{416E7F2B-C5AB-4E38-B296-755935BB1500}"
+          DTS:From="Package\Daily Refresh Workflow\Execute Staging Daily"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Stage Completed"
+          DTS:To="Package\Daily Refresh Workflow\Execute DM Daily" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="sql11">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="155,42"
+          Id="Package\Daily Refresh Workflow\Complete Batch\Complete Batch"
+          TopLeft="5.5,5.5" />
+        <ContainerLayout
+          HeaderHeight="70"
+          IsExpanded="False"
+          PanelSize="233,67"
+          Size="177,70"
+          Id="Package\Daily Refresh Workflow\Complete Batch"
+          TopLeft="18.5000000000001,543.5" />
+        <NodeLayout
+          Size="141,42"
+          Id="Package\Daily Refresh Workflow\Create New Batch\Create Batch"
+          TopLeft="18.5,5.5" />
+        <NodeLayout
+          Size="167,42"
+          Id="Package\Daily Refresh Workflow\Create New Batch\Set Batch Variable"
+          TopLeft="5.50000000000001,107.5" />
+        <EdgeLayout
+          Id="Package\Daily Refresh Workflow\Create New Batch.PrecedenceConstraints[Constraint]"
+          TopLeft="89,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="70"
+          IsExpanded="True"
+          PanelSize="311,204"
+          Size="311,274"
+          Id="Package\Daily Refresh Workflow\Create New Batch"
+          TopLeft="13.5,5.5" />
+        <NodeLayout
+          Size="163,42"
+          Id="Package\Daily Refresh Workflow\Execute DM Daily"
+          TopLeft="25.5,339.5" />
+        <NodeLayout
+          Size="185,42"
+          Id="Package\Daily Refresh Workflow\Execute Landing Daily"
+          TopLeft="14.3895369943226,115.148804236717" />
+        <NodeLayout
+          Size="203,42"
+          Id="Package\Daily Refresh Workflow\Execute Source Writeback"
+          TopLeft="5.50000000000006,441.5" />
+        <NodeLayout
+          Size="183,42"
+          Id="Package\Daily Refresh Workflow\Execute Staging Daily"
+          TopLeft="15.5,237.5" />
+        <EdgeLayout
+          Id="Package\Daily Refresh Workflow.PrecedenceConstraints[Constraint]"
+          TopLeft="107,483.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Daily Refresh Workflow.PrecedenceConstraints[Constraint 1]"
+          TopLeft="169,279.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-62.1104630056774,-164.351195763283"
+              Start="0,0"
+              End="-62.1104630056774,-156.851195763283">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-78.1755978816415" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-78.1755978816415"
+                    Point2="0,-82.1755978816415"
+                    Point3="-4,-82.1755978816415" />
+                  <mssgle:LineSegment
+                    End="-58.1104630056774,-82.1755978816415" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-58.1104630056774,-82.1755978816415"
+                    Point2="-62.1104630056774,-82.1755978816415"
+                    Point3="-62.1104630056774,-86.1755978816415" />
+                  <mssgle:LineSegment
+                    End="-62.1104630056774,-156.851195763283" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Daily Refresh Workflow.PrecedenceConstraints[DM Completed]"
+          TopLeft="107,381.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-31.63298828125,21.4453125,63.2659765625,9.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Daily Refresh Workflow.PrecedenceConstraints[Landing Completed]"
+          TopLeft="106.944768497161,157.148804236717">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,80.3511957632829"
+              Start="0,0"
+              End="0,72.8511957632829">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,72.8511957632829" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-41.75798828125,31.5940549128914,83.5159765625,9.6630859375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Daily Refresh Workflow.PrecedenceConstraints[Stage Completed]"
+          TopLeft="107,279.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-37.04365234375,21.41845703125,74.0873046875,9.6630859375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="330,669"
+          Size="330,712"
+          Id="Package\Daily Refresh Workflow"
+          TopLeft="5.50000000000011,5.5" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <PrecedenceConstraint
+    design-time-name="Package\Daily Refresh Workflow.PrecedenceConstraints[DM Completed]">
+    <ShowAnnotation>ConstraintName</ShowAnnotation>
+  </PrecedenceConstraint>
+  <PrecedenceConstraint
+    design-time-name="Package\Daily Refresh Workflow.PrecedenceConstraints[Landing Completed]">
+    <ShowAnnotation>ConstraintName</ShowAnnotation>
+  </PrecedenceConstraint>
+  <PrecedenceConstraint
+    design-time-name="Package\Daily Refresh Workflow.PrecedenceConstraints[Stage Completed]">
+    <ShowAnnotation>ConstraintName</ShowAnnotation>
+  </PrecedenceConstraint>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
